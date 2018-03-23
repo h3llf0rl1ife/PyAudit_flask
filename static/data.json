@@ -1,0 +1,282 @@
+{
+  "sites": {
+    "1": {
+      "SiteName": "COPAG Siège",
+      "zones": {
+        "1": {
+          "ZoneName": "Zone 1",
+          "units": {
+            "1": {
+              "UnitName": "Unité 1",
+              "workshops": {
+                "1": {
+                  "WorkshopName": "Atelier 1",
+                  "areas": {
+                    "1": {
+                      "AreaName": "Espace 1",
+                      "Address": "Adresse 1"
+                    },
+                    "2": {
+                      "AreaName": "Espace 2",
+                      "Address": "Adresse 2"
+                    }
+                  }
+                },
+                "2": {
+                  "WorkshopName": "Atelier 2",
+                  "areas": {
+                    "3": {
+                      "AreaName": "Espace 3",
+                      "Address": "Adresse 3"
+                    },
+                    "4": {
+                      "AreaName": "Espace 4",
+                      "Address": "Adresse 4"
+                    }
+                  }
+                }
+              }
+            },
+            "2": {
+              "UnitName": "Unité 2",
+              "workshops": {
+                "3": {
+                  "WorkshopName": "Atelier 3",
+                  "areas": {
+                    "5": {
+                      "AreaName": "Espace 5",
+                      "Address": "Adresse 5"
+                    },
+                    "6": {
+                      "AreaName": "Espace 6",
+                      "Address": "Adresse 6"
+                    }
+                  }
+                },
+                "4": {
+                  "WorkshopName": "Atelier 4",
+                  "areas": {
+                    "7": {
+                      "AreaName": "Espace 7",
+                      "Address": "Adresse 7"
+                    },
+                    "8": {
+                      "AreaName": "Espace 8",
+                      "Address": "Adresse 8"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "ZoneName": "Zone 2",
+          "units": {
+            "3": {
+              "UnitName": "Unité 3",
+              "workshops": {
+                "5": {
+                  "WorkshopName": "Atelier 5",
+                  "areas": {
+                    "9": {
+                      "AreaName": "Espace 9",
+                      "Address": "Adresse 9"
+                    },
+                    "10": {
+                      "AreaName": "Espace 10",
+                      "Address": "Adresse 10"
+                    }
+                  }
+                },
+                "6": {
+                  "WorkshopName": "Atelier 6",
+                  "areas": {
+                    "11": {
+                      "AreaName": "Espace 11",
+                      "Address": "Adresse 11"
+                    },
+                    "12": {
+                      "AreaName": "Espace 12",
+                      "Address": "Adresse 12"
+                    }
+                  }
+                }
+              }
+            },
+            "4": {
+              "UnitName": "Unité 4",
+              "workshops": {
+                "7": {
+                  "WorkshopName": "Atelier 7",
+                  "areas": {
+                    "13": {
+                      "AreaName": "Espace 13",
+                      "Address": "Adresse 13"
+                    },
+                    "14": {
+                      "AreaName": "Espace 14",
+                      "Address": "Adresse 14"
+                    }
+                  }
+                },
+                "8": {
+                  "WorkshopName": "Atelier 8",
+                  "areas": {
+                    "15": {
+                      "AreaName": "Espace 15",
+                      "Address": "Adresse 15"
+                    },
+                    "16": {
+                      "AreaName": "Espace 16",
+                      "Address": "Adresse 16"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "SiteName": "COPAG Larache",
+      "zones": {
+        "3": {
+          "ZoneName": "Zone 3",
+          "units": {
+            "5": {
+              "UnitName": "Unité 5",
+              "workshops": {
+                "9": {
+                  "WorkshopName": "Atelier 9",
+                  "areas": {
+                    "17": {
+                      "AreaName": "Espace 17",
+                      "Address": "Adresse 17"
+                    },
+                    "18": {
+                      "AreaName": "Espace 18",
+                      "Address": "Adresse 18"
+                    }
+                  }
+                },
+                "10": {
+                  "WorkshopName": "Atelier 10",
+                  "areas": {
+                    "19": {
+                      "AreaName": "Espace 19",
+                      "Address": "Adresse 19"
+                    },
+                    "20": {
+                      "AreaName": "Espace 20",
+                      "Address": "Adresse 20"
+                    }
+                  }
+                }
+              }
+            },
+            "6": {
+              "UnitName": "Unité 6",
+              "workshops": {
+                "11": {
+                  "WorkshopName": "Atelier 11",
+                  "areas": {
+                    "21": {
+                      "AreaName": "Espace 21",
+                      "Address": "Adresse 21"
+                    },
+                    "22": {
+                      "AreaName": "Espace 22",
+                      "Address": "Adresse 22"
+                    }
+                  }
+                },
+                "12": {
+                  "WorkshopName": "Atelier 12",
+                  "areas": {
+                    "23": {
+                      "AreaName": "Espace 23",
+                      "Address": "Adresse 23"
+                    },
+                    "24": {
+                      "AreaName": "Espace 24",
+                      "Address": "Adresse 24"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "4": {
+          "ZoneName": "Zone 4",
+          "units": {
+            "7": {
+              "UnitName": "Unité 7",
+              "workshops": {
+                "13": {
+                  "WorkshopName": "Atelier 13",
+                  "areas": {
+                    "25": {
+                      "AreaName": "Espace 25",
+                      "Address": "Adresse 25"
+                    },
+                    "26": {
+                      "AreaName": "Espace 26",
+                      "Address": "Adresse 26"
+                    }
+                  }
+                },
+                "14": {
+                  "WorkshopName": "Atelier 14",
+                  "areas": {
+                    "27": {
+                      "AreaName": "Espace 27",
+                      "Address": "Adresse 27"
+                    },
+                    "28": {
+                      "AreaName": "Espace 28",
+                      "Address": "Adresse 28"
+                    }
+                  }
+                }
+              }
+            },
+            "8": {
+              "UnitName": "Unité 8",
+              "workshops": {
+                "15": {
+                  "WorkshopName": "Atelier 15",
+                  "areas": {
+                    "29": {
+                      "AreaName": "Espace 29",
+                      "Address": "Adresse 29"
+                    },
+                    "30": {
+                      "AreaName": "Espace 30",
+                      "Address": "Adresse 30"
+                    }
+                  }
+                },
+                "16": {
+                  "WorkshopName": "Atelier 16",
+                  "areas": {
+                    "31": {
+                      "AreaName": "Espace 31",
+                      "Address": "Adresse 31"
+                    },
+                    "32": {
+                      "AreaName": "Espace 32",
+                      "Address": "Adresse 32"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
