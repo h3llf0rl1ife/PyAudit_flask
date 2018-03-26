@@ -299,8 +299,20 @@
         options: {
           legend: {
             position: "left",
-          }
+          },
+          events: ["click"]
         }
     });
+
+    $(".pie").on("click", function(evt) {
+        var pie_event = pie.getElementAtEvent(evt)[0]
+
+        if (pie_event) {
+            var label = pie.data.labels[pie_event._index]
+            var value = pie.data.datasets[pie_event._datasetIndex].data[pie_event._index]
+            console.log(label, value)
+        }
+    })
+    
   </script>
   {% endblock %}
