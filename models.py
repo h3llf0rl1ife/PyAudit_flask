@@ -131,29 +131,36 @@ class Unit(db.Model): # Unité
         return '<Unit %r>' % self.UnitName
 
 
-class Workshop(db.Model): # Atelier
-    WorkshopID = db.Column(db.Integer, primary_key=True)
-    WorkshopName = db.Column(db.String, nullable=False)
+class Location(db.Model): # Localisation
+    LocationID = db.Column(db.Integer, primary_key=True)
+    LocationName = db.Column(db.String, nullable=False)
     UnitID = db.Column(db.Integer, db.ForeignKey('unit.UnitID'), nullable=False)
+    LocationTypeID = db.Column(db.Integer, db.ForeignKey('location_type.LocationTypeID'), nullable=False)
 
-    unit_r = db.relationship('Unit', backref=db.backref('unit_workshop', lazy=True))
+    unit_r = db.relationship('Unit', backref=db.backref('unit_location', lazy=True))
+    location_type_r = db.relationship('LocationType', backref=db.backref('location_types', lazy=True))
 
     def __repr__(self):
-        return '<Workshop %r>' % self.WorkshopName
+        return '<Location %r>' % self.LocationName
+
+
+class LocationType(db.Model): # Atelier / Bâtiment / Station
+    LocationTypeID = db.Column(db.Integer, primary_key=True)
+    Description = db.Column(db.String, nullable=False)
+
+    def __repr__(self):
+        return '<Location %r>' % self.LocationName
     
 
 class Area(db.Model): # Local / Espace
     AreaID = db.Column(db.Integer, primary_key=True)
     AreaName = db.Column(db.String, nullable=False)
     Address = db.Column(db.String, unique=True, nullable=False)
-    WorkshopID = db.Column(db.Integer, db.ForeignKey('workshop.WorkshopID'), nullable=False)
+    LocationID = db.Column(db.Integer, db.ForeignKey('location.LocationID'), nullable=False)
 
-    workshop_r = db.relationship('Workshop', backref=db.backref('workshop_area', lazy=True))
+    location_r = db.relationship('Location', backref=db.backref('location_area', lazy=True))
 
     def __repr__(self):
         return '<Area %r>' % self.AreaName
-
-
-
 
 
