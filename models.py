@@ -2,9 +2,6 @@ from datetime import datetime
 from PyAudit_flask import db
 
 
-# TODO: Add modification tracking for Evaluation (new table)
-
-
 class User(db.Model):
     #__tablename__ = "user"
     UserID = db.Column(db.String, primary_key=True)
@@ -45,6 +42,19 @@ class Evaluation(db.Model):
 
     def __repr__(self):
         return '<Evaluation %r>' % self.EvaluationID
+
+
+class EvaluationEdit(db.Model):
+    EvaluationEditID = db.Column(db.Integer, primary_key=True)
+    EvaluationID = db.Column(db.Integer, db.ForeignKey('evaluation.EvaluationID'), nullable=False)
+    UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
+    Date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    evaluation_r = db.relationship('Evaluation', backref=db.backref('evaluation_edits', lazy=True))
+    user_r = db.relationship('User', backref=db.backref('user_evaluation_edit', lazy=True))
+
+    def __repr__(self):
+        return '<EvaluationEdit %r>' % self.EvaluationEditID
 
 
 class Category(db.Model):
