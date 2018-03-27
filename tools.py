@@ -19,7 +19,7 @@ def getUnit(value):
     return [{"UnitID": unit.UnitID, "UnitName": unit.UnitName} for unit in units]
 
 
-def getWorkshop(value):
+def getLocation(value):
     workshops = models.Workshop.query.filter_by(UnitID=value).all()
     return [{"WorkshopID": workshop.WorkshopID, "WorkshopName": workshop.WorkshopName} for workshop in workshops]
 

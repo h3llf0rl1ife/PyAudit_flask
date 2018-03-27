@@ -64,11 +64,10 @@ def evaluation():
     
     evaluation_form = forms.EvaluationForm()
     
-    contexts = {
-        "sites": models.Site.query.all(),
-        "criterias": models.Criteria.query.all(),
-        "evaluationID": tls.getLatestEvaluationID_plusOne()
-    }
+    contexts = {}
+    contexts["sites"] = models.Site.query.all()
+    contexts["criterias"] = models.Criteria.query.all()
+    contexts["evaluationID"] = tls.getLatestEvaluationID_plusOne()
 
     return render_template('evaluation.html', contexts=contexts, evaluation_form=evaluation_form)
 
@@ -85,11 +84,11 @@ def evaluation_api():
     queries = {
         "Zone": tls.getZone,
         "Unit": tls.getUnit,
-        "Workshop": tls.getWorkshop,
-        "Area": tls.getArea,
+        #"Workshop": tls.getWorkshop,
+        "Location": tls.getLocation,
         #"criteria": tls.getCriteria,
         "Category": tls.getCategory,
-        "Address": tls.getAddress,
+        #"Address": tls.getAddress,
         "EvaluationID": tls.getEvaluationID,
         "Evaluation": tls.getEvaluation
     }
@@ -116,14 +115,14 @@ def evaluation_api():
         elif evaluation_form.validate_on_submit():
             evaluation_id = tls.getLatestEvaluationID_plusOne()
             user_id = current_user.UserID
-            area_id = request.form["AreaID"]
+            location_id = request.form["LocationID"]
             category_id = request.form["CategoryID"]
             validation = int(request.form["Validation"])
             comment = request.form["Comment"]
 
             evaluation_entry = models.Evaluation(
                 UserID=user_id,
-                AreaID=area_id,
+                LocationID=location_id,
                 CategoryID=category_id,
                 Validation=validation,
                 Comment=comment
