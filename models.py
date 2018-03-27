@@ -46,6 +46,7 @@ class Evaluation(db.Model):
 
 
 class EvaluationEdit(db.Model):
+    __tablename__ = "T_EVALUATION_EDIT"
     EvaluationEditID = db.Column(db.Integer, primary_key=True)
     EvaluationID = db.Column(db.Integer, db.ForeignKey('evaluation.EvaluationID'), nullable=False)
     UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
