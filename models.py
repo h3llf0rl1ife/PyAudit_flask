@@ -103,6 +103,7 @@ class AttachmentType(db.Model):
 
 
 class Attachment(db.Model):
+    __tablename__ = "T_ATTACHMENT"
     AttachmentID = db.Column(db.Integer, primary_key=True)
     EvaluationID = db.Column(db.Integer, db.ForeignKey('evaluation.EvaluationID'), nullable=False)
     AttachmentTypeID = db.Column(db.Integer, db.ForeignKey('attachment_type.AttachmentTypeID'), nullable=False)
