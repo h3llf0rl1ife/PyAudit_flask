@@ -94,6 +94,7 @@ class Feedback(db.Model):
 
 
 class AttachmentType(db.Model):
+    __tablename__ = "T_ATTACHMENT_TYPE"
     AttachmentTypeID = db.Column(db.Integer, primary_key=True)
     Description = db.Column(db.String, unique=True, nullable=False)
 
