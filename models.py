@@ -81,6 +81,7 @@ class Criteria(db.Model):
 
 
 class Feedback(db.Model):
+    __tablename__ = "T_EVALUATION_FEEDBACK"
     EvaluationID = db.Column(db.Integer, db.ForeignKey('evaluation.EvaluationID'), primary_key=True)
     UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
     Feedback = db.Column(db.Text, nullable=False)
