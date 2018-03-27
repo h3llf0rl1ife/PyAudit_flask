@@ -72,6 +72,7 @@ class Category(db.Model):
 
 
 class Criteria(db.Model):
+    __tablename__ = "T_CRITERIA"
     CriteriaID = db.Column(db.String, primary_key=True)
     Description = db.Column(db.Text, nullable=False)
 
