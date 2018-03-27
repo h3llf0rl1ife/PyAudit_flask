@@ -38,7 +38,7 @@ class Evaluation(db.Model):
     Comment = db.Column(db.Text, nullable=True) # Remarque
 
     user_r = db.relationship('User', backref=db.backref('user_eval', lazy=True))
-    area_r = db.relationship('Area', backref=db.backref('area_eval', lazy=True))
+    location_r = db.relationship('Location', backref=db.backref('location_eval', lazy=True))
     category_r = db.relationship('Category', backref=db.backref('category_eval', lazy=True))
 
     def __repr__(self):
