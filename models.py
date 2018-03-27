@@ -3,7 +3,7 @@ from PyAudit_flask import db
 
 
 class User(db.Model):
-    #__tablename__ = "user"
+    __tablename__ = "T_USER"
     UserID = db.Column(db.String, primary_key=True)
     password = db.Column(db.String, nullable=False)
     Profile = db.Column(db.String, nullable=False)
