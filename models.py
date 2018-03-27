@@ -140,6 +140,7 @@ class Zone(db.Model):
 
 
 class Unit(db.Model): # Unité
+    __tablename__ = "T_UNIT"
     UnitID = db.Column(db.Integer, primary_key=True)
     UnitName = db.Column(db.String, nullable=False)
     ZoneID = db.Column(db.Integer, db.ForeignKey('zone.ZoneID'), nullable=False)
