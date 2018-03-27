@@ -28,6 +28,7 @@ class User(db.Model):
 
 
 class Evaluation(db.Model):
+    __tablename__ = "T_EVALUATION"
     EvaluationID = db.Column(db.Integer, primary_key=True)
     UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
     AreaID = db.Column(db.Integer, db.ForeignKey('area.AreaID'), nullable=False)
