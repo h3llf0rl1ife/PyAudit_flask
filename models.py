@@ -117,6 +117,7 @@ class Attachment(db.Model):
 
 
 class Site(db.Model):
+    __tablename__ = "T_SITE"
     SiteID = db.Column(db.Integer, primary_key=True)
     SiteName = db.Column(db.String, nullable=False)
 
