@@ -60,6 +60,7 @@ class EvaluationEdit(db.Model):
 
 
 class Category(db.Model):
+    __tablename__ = "T_CATEGORY"
     CategoryID = db.Column(db.Integer, primary_key=True)
     CriteriaID = db.Column(db.String, db.ForeignKey('criteria.CriteriaID'), nullable=False)
     Description = db.Column(db.Text, nullable=False)
