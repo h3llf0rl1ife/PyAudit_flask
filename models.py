@@ -152,6 +152,7 @@ class Unit(db.Model): # Unité
 
 
 class Location(db.Model): # Localisation
+    __tablename__ = "T_LOCATION"
     LocationID = db.Column(db.Integer, primary_key=True)
     LocationName = db.Column(db.String, nullable=False)
     UnitID = db.Column(db.Integer, db.ForeignKey('unit.UnitID'), nullable=False)
