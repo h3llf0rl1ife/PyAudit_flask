@@ -166,6 +166,7 @@ class Location(db.Model): # Localisation
 
 
 class LocationType(db.Model): # Atelier / Bâtiment / Station
+    __tablename__ = "T_LOCATION_TYPE"
     LocationTypeID = db.Column(db.Integer, primary_key=True)
     Description = db.Column(db.String, nullable=False)
 
