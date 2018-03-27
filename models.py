@@ -31,7 +31,7 @@ class Evaluation(db.Model):
     __tablename__ = "T_EVALUATION"
     EvaluationID = db.Column(db.Integer, primary_key=True)
     UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
-    AreaID = db.Column(db.Integer, db.ForeignKey('area.AreaID'), nullable=False)
+    LocationID = db.Column(db.Integer, db.ForeignKey('location.LocationID'), nullable=False)
     CategoryID = db.Column(db.Integer, db.ForeignKey('category.CategoryID'), nullable=False)
     Date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     Validation = db.Column(db.Integer, nullable=False)
