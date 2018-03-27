@@ -126,6 +126,7 @@ class Site(db.Model):
 
 
 class Zone(db.Model):
+    __tablename__ = "T_ZONE"
     ZoneID = db.Column(db.Integer, primary_key=True)
     UserID = db.Column(db.String, db.ForeignKey('user.UserID'), nullable=False)
     SiteID = db.Column(db.Integer, db.ForeignKey('site.SiteID'), nullable=False)
