@@ -163,15 +163,4 @@ class LocationType(db.Model): # Atelier / Bâtiment / Station
         return '<Location %r>' % self.LocationName
     
 
-class Area(db.Model): # Local / Espace
-    AreaID = db.Column(db.Integer, primary_key=True)
-    AreaName = db.Column(db.String, nullable=False)
-    Address = db.Column(db.String, unique=True, nullable=False)
-    LocationID = db.Column(db.Integer, db.ForeignKey('location.LocationID'), nullable=False)
-
-    location_r = db.relationship('Location', backref=db.backref('location_area', lazy=True))
-
-    def __repr__(self):
-        return '<Area %r>' % self.AreaName
-
 
