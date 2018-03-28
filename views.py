@@ -82,11 +82,11 @@ def evaluation_api():
     evaluation_form = forms.EvaluationForm()
 
     queries = {}
-    queries["Zone"] = tls.getZone,
-    queries["Unit"] = tls.getUnit,
-    queries["Location"] = tls.getLocation,
-    queries["Category"] = tls.getCategory,
-    queries["EvaluationID"] = tls.getEvaluationID,
+    queries["Zone"] = tls.getZone
+    queries["Unit"] = tls.getUnit
+    queries["Location"] = tls.getLocation
+    queries["Category"] = tls.getCategory
+    queries["EvaluationID"] = tls.getEvaluationID
     queries["Evaluation"] = tls.getEvaluation
     
 
