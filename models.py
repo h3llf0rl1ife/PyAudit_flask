@@ -105,7 +105,7 @@ class AttachmentType(db.Model):
 class Attachment(db.Model):
     __tablename__ = "T_ATTACHMENT"
     AttachmentID = db.Column(db.Integer, primary_key=True)
-    EvaluationID = db.Column(db.Integer, db.ForeignKey('evaluation.EvaluationID'), nullable=False)
+    EvaluationID = db.Column(db.Integer, db.ForeignKey('T_EVALUATION.EvaluationID'), nullable=False)
     AttachmentTypeID = db.Column(db.Integer, db.ForeignKey('T_ATTACHMENT_TYPE.AttachmentTypeID'), nullable=False)
     Path = db.Column(db.String, unique=True, nullable=False)
 
