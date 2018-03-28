@@ -36,7 +36,7 @@ def getEvaluationID(value):
 
 def getEvaluation(value):
     evaluation = models.Evaluation.query.get(value)
-    location = models.Location.query.get(evaluation..LocationID)
+    location = models.Location.query.get(evaluation.LocationID)
     unit = models.Unit.query.get(location.UnitID)
     zone = models.Zone.query.get(unit.ZoneID)
     category = models.Category.query.get(evaluation.CategoryID)
