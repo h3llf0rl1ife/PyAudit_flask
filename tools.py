@@ -24,10 +24,6 @@ def getLocation(value):
     return [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
 
 
-#def getCriteria(value):
-#    return models.Criteria.query.filter_by(CriteriaID=value).all()
-
-
 def getCategory(value):
     categories = models.Category.query.filter_by(CriteriaID=value).all()
     return [{"CategoryID": category.CategoryID, "Description": category.Description} for category in categories]
