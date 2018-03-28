@@ -31,7 +31,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               <li><a href="#"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}</a></li>
               {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/evaluation"><i class="material-icons left">&#xE85D;</i>Saisie données</a></li>
+              <li><a href="/evaluation"><i class="material-icons left">&#xE85D;</i>Evaluation</a></li>
               <li><a href="/consultation"><i class="material-icons left">&#xE24B;</i>Consultation</a></li>
               {% endif %}
               <li><a href="/logout"><i class="material-icons left">&#xE8AC;</i>Se déconnecter</a></li>
@@ -39,7 +39,7 @@
             <ul class="side-nav" id="mobile-nav">
               <li><a href="#" class="nop"><i class="material-icons left nom">account_circle</i>{{ current_user.UserID }}</a></li>
               {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Saisie données</a></li>
+              <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
               <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE24B;</i>Consultation</a></li>
               {% endif %}
               <li><a href="/logout" class="nop"><i class="material-icons left nom">&#xE8AC;</i>Se déconnecter</a></li>
