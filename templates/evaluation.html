@@ -15,6 +15,7 @@
         </ul>
       {% endif %}
     {% endwith %}
+
     <form action="/evaluation/api" method="POST" enctype="multipart/form-data">
       {{ evaluation_form.csrf_token }}
       <div class="row section">
@@ -55,28 +56,12 @@
         </div>
       </div>
 
-      <div class="row section">
-        <div class="valign-wrapper">
-          <span class="col s4 m3 l2">Atelier</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Workshop">
-            <option value="" disabled selected>Selectionner</option>
-          </select>
-        </div>
-      </div>
-
       <div class="row">
         <div class="valign-wrapper">
-          <span class="col s4 m3 l2">Local / Espace</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Area" name="AreaID">
+          <span class="col s4 m3 l2">Localisation</span>
+          <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID">
             <option value="" disabled selected>Selectionner</option>
           </select>
-        </div>
-      </div>
-
-      <div class="row section">
-        <div class="valign-wrapper">
-          <span class="col s4 m3 l2">Adresse</span>
-          <input class="col s8 m9 l10 input-field" id="i-Address" value="" type="text" required disabled>
         </div>
       </div>
 
