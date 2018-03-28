@@ -84,11 +84,8 @@ def evaluation_api():
     queries = {
         "Zone": tls.getZone,
         "Unit": tls.getUnit,
-        #"Workshop": tls.getWorkshop,
         "Location": tls.getLocation,
-        #"criteria": tls.getCriteria,
         "Category": tls.getCategory,
-        #"Address": tls.getAddress,
         "EvaluationID": tls.getEvaluationID,
         "Evaluation": tls.getEvaluation
     }
