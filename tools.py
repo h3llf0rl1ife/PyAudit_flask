@@ -52,8 +52,8 @@ def getEvaluation(value):
         "Comment": evaluation.Comment,
         "Site": zone.SiteID,
         "Zone": unit.ZoneID,
-        "Unit": workshop.UnitID,
-        "Workhsop": workshop.WorkshopID,
+        "Unit": location.UnitID,
+        "Location": location.LocationID,
         "Criteria": category.CriteriaID
     }
     return evaluation_dict
