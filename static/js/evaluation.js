@@ -5,41 +5,22 @@ $(document).ready(function() {
 $("#i-Site").on("change", function() {
     removeOptions("Zone")
     removeOptions("Unit")
-    removeOptions("Workshop")
-    removeOptions("Area")
-    $('#i-Address').val("")
+    removeOptions("Location")
     
     getData($("#i-Site").val(), "Zone")
 })
 
 $("#i-Zone").on("change", function() {
     removeOptions("Unit")
-    removeOptions("Workshop")
-    removeOptions("Area")
-    $('#i-Address').val("")
+    removeOptions("Location")
     
     getData($("#i-Zone").val(), "Unit")
 })
 
 $("#i-Unit").on("change", function() {
-    removeOptions("Workshop")
-    removeOptions("Area")
-    $('#i-Address').val("")
-    
-    getData($("#i-Unit").val(), "Workshop")
-})
+    removeOptions("Location")
 
-$("#i-Workshop").on("change", function() {
-    removeOptions("Area")
-    $('#i-Address').val("")
-
-    getData($("#i-Workshop").val(), "Area")
-})
-
-$("#i-Area").on("change", function() {
-    $('#i-Address').val("")
-
-    getData($("#i-Area").val(), "Address")
+    getData($("#i-Unit").val(), "Location")
 })
 
 $("#i-Criteria").on("change", function() {
@@ -58,9 +39,7 @@ $(".btn-modifier").on("click", function() {
     $("#i-Site").val("")
     removeOptions("Zone")
     removeOptions("Unit")
-    removeOptions("Workshop")
-    removeOptions("Area")
-    $('#i-Address').val("")
+    removeOptions("Location")
     removeOptions("Criteria")
     removeOptions("Category")
     removeOptions("Validation")
@@ -108,9 +87,7 @@ function getData(value, field) {
     }, function(data) {
         console.log(data.result)
         
-        if (field === "Address") {
-            $('#i-' + field).val(data.result)
-        } else if (field === "Category") {
+        if (field === "Category") {
             removeOptions(field)
             $.each(data.result, function(key, val) {
                 $('#i-' + field).append(
