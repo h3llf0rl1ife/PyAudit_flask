@@ -13,7 +13,7 @@ class LoginForm(FlaskForm):
 class EvaluationForm(FlaskForm):
     #EvaluationID = IntegerField('EvaluationID', validators=[DataRequired()])
     #UserID = StringField('UserID', validators=[DataRequired()])
-    AreaID = IntegerField('AreaID', validators=[DataRequired()])
+    LocationID = IntegerField('LocationID', validators=[DataRequired()])
     CategoryID = IntegerField('CategoryID', validators=[DataRequired()])
     #Date = DateTimeField
     Validation = StringField('Validation', validators=[DataRequired()])
