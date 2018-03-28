@@ -20,17 +20,8 @@ def getUnit(value):
 
 
 def getLocation(value):
-    workshops = models.Workshop.query.filter_by(UnitID=value).all()
-    return [{"WorkshopID": workshop.WorkshopID, "WorkshopName": workshop.WorkshopName} for workshop in workshops]
-
-
-def getArea(value):
-    areas = models.Area.query.filter_by(WorkshopID=value).all()
-    return [{"AreaID": area.AreaID, "AreaName": area.AreaName} for area in areas]
-
-
-def getAddress(value):
-    return models.Area.query.filter_by(AreaID=value)[0].Address
+    locations = models.Location.query.filter_by(UnitID=value).all()
+    return [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
 
 
 #def getCriteria(value):
