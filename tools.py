@@ -40,8 +40,8 @@ def getEvaluationID(value):
 
 def getEvaluation(value):
     evaluation = models.Evaluation.query.get(value)
-    workshop = models.Workshop.query.get(models.Area.query.get(evaluation.AreaID).WorkshopID)
-    unit = models.Unit.query.get(workshop.UnitID)
+    location = models.Location.query.get(evaluation..LocationID)
+    unit = models.Unit.query.get(location.UnitID)
     zone = models.Zone.query.get(unit.ZoneID)
     category = models.Category.query.get(evaluation.CategoryID)
     
