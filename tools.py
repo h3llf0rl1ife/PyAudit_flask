@@ -42,7 +42,6 @@ def getEvaluation(value):
     category = models.Category.query.get(evaluation.CategoryID)
     
     evaluation_dict = {
-        "AreaID": evaluation.AreaID,
         "CategoryID": evaluation.CategoryID,
         "Validation": str(evaluation.Validation),
         "Comment": evaluation.Comment,
