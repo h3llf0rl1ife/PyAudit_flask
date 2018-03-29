@@ -53,7 +53,10 @@ $(".btn-modifier").on("click", function() {
             class: "center-align col s2 m1 l1 browser-default",
             required: true
         }).append(
-            new Option("Selectionner", "", true, true)
+            new Option("Selectionner", "", true, true).attr({
+                disabled: true,
+                value: ""
+            })
         )
     )
 
