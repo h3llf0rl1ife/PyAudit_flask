@@ -29,7 +29,7 @@
       <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Site</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Site">
+          <select class="col s8 m9 l10 browser-default" id="i-Site" required>
             <option value="" disabled selected>Selectionner</option>
             {% for site in contexts.sites %}
             <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
@@ -41,7 +41,7 @@
       <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Zone</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Zone">
+          <select class="col s8 m9 l10 browser-default" id="i-Zone" required>
             <option value="" disabled selected>Selectionner</option>
           </select>
         </div>
@@ -50,7 +50,7 @@
       <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Unit&eacute;</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Unit">
+          <select class="col s8 m9 l10 browser-default" id="i-Unit" required>
             <option value="" disabled selected>Selectionner</option>
           </select>
         </div>
@@ -59,7 +59,7 @@
       <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Localisation</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID">
+          <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID" required>
             <option value="" disabled selected>Selectionner</option>
           </select>
         </div>
@@ -68,7 +68,7 @@
       <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Crit&egrave;re d'&eacute;valuation</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Criteria">
+          <select class="col s8 m9 l10 browser-default" id="i-Criteria" required>
             <option value="" disabled selected>Selectionner</option>
             {% for criteria in contexts.criterias %}
             <option value="{{ criteria.CriteriaID }}">{{ criteria.Description }}</option>
@@ -80,7 +80,7 @@
       <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Rubrique</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Category" name="CategoryID">
+          <select class="col s8 m9 l10 browser-default" id="i-Category" name="CategoryID" required>
             <option value="" disabled selected>Selectionner</option>
           </select>
         </div>
@@ -89,7 +89,7 @@
       <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Validation</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Validation" name="Validation">
+          <select class="col s8 m9 l10 browser-default" id="i-Validation" name="Validation" required>
             <option value="" disabled selected>Selectionner</option>
             <option value="1">Oui</option>
             <option value="0">Non</option>
