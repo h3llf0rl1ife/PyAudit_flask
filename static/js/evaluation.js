@@ -49,8 +49,9 @@ $(".btn-modifier").on("click", function() {
 
     $("#evaluationID-wrapper").append(
         $("<select>").attr({
-            "id": "i-EvaluationID",
-            "class": "center-align col s2 m1 l1 browser-default"
+            id: "i-EvaluationID",
+            class: "center-align col s2 m1 l1 browser-default",
+            required: true
         }).append(
             new Option("Selectionner", "", true, true)
         )
