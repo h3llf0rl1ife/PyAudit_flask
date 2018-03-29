@@ -254,10 +254,10 @@
     })
 
 
-    var map = L.map('map').setView([30.5090965, -8.7930388,17], 14);
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 18, attribution: osmAttrib});
+    const map = L.map('map').setView([30.5090965, -8.7930388,17], 14);
+    const osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    const osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 18, attribution: osmAttrib});
     map.addLayer(osm)
 
     var geojson_data = {
@@ -280,8 +280,8 @@
     
     L.geoJSON(geojson_data).addTo(map);
     
-    var pie_ctx = $(".pie")[0].getContext("2d")
-    var pie = new Chart(pie_ctx,{
+    const pie_ctx = $(".pie")[0].getContext("2d")
+    const pie = new Chart(pie_ctx, {
         type: 'pie',
         data: {
           labels: ["S1", "S2", "S3", "S4", "S5"],
@@ -297,22 +297,70 @@
           }],
         },
         options: {
-          legend: {
-            position: "left",
-          },
-          events: ["click"]
+            title: {
+                  display: true,
+                  position: 'top',
+                  text: 'Audit 5S'
+              },
+            legend: {
+                position: "left",
+            },
+            animation: {
+                animateRotate: false
+            }
         }
     });
 
-    $(".pie").on("click", function(evt) {
-        var pie_event = pie.getElementAtEvent(evt)[0]
 
-        if (pie_event) {
-            var label = pie.data.labels[pie_event._index]
-            var value = pie.data.datasets[pie_event._datasetIndex].data[pie_event._index]
-            console.log(label, value)
+    function PieClickHandler() {
+        $(".pie").on("click", function(evt) {
+            let pie_event = pie.getElementAtEvent(evt)[0]
+
+            if (pie_event) {
+                let label = pie.data.labels[pie_event._index]
+                let value = pie.data.datasets[pie_event._datasetIndex].data[pie_event._index]
+                console.log(label, value)
+
+                if (label === "S3") {
+                    $(".pies").removeClass("hide")
+                    $(".pie").addClass("hide")
+                }
+            }
+        })
+    }
+    
+    $(PieClickHandler())
+
+    const pies_ctx = $(".pies")[0].getContext("2d")
+    const pies_data = {
+        labels: ["Rubrique 1", "Rubrique 2", "Rubrique 3", "Rubrique 4"],
+        datasets: [{
+            data: [23, 34, 16, 42],
+            backgroundColor: [
+                "#f58012",
+                "#efe224",
+                "#b2adac",
+                "#88b04b"
+            ]
+        }],
+    }
+    const pies = new Chart(pies_ctx, {
+        type: 'pie',
+        data: pies_data,
+        options: {
+            title: {
+                  display: true,
+                  position: 'top',
+                  text: 'Audit 5S'
+              },
+            legend: {
+                position: "left",
+            },
+            animation: {
+                animateRotate: false
+            }
         }
-    })
+    });
     
   </script>
   {% endblock %}
