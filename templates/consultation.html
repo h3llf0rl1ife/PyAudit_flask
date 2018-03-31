@@ -7,25 +7,15 @@
 
 {% block body %}
 <div class="container">
-
-<div class="hide-on-med-and-down show-on-large">
-  <div class="row section">
-    <div class="col s6">
-      <canvas class="Zone_one"></canvas>
+  <div id="LineCharts">
+    {% for ZoneID in contexts.Zones %}
+    <div class="row section">
+      <div class="col s12">
+        <canvas id="Zone{{ ZoneID }}"></canvas>
+      </div>
     </div>
-    <div class="col s6">
-      <canvas class="Zone_two"></canvas>
-    </div>
+    {% endfor %}
   </div>
-  <div class="row section">
-    <div class="col s6">
-      <canvas class="Zone_three"></canvas>
-    </div>
-    <div class="col s6">
-      <canvas class="Zone_four"></canvas>
-    </div>
-  </div>
-</div>
 
 <div class="show-on-medium-and-down hide-on-large-only">
   <div class="row section">
@@ -67,6 +57,7 @@
 <div class="row section">
   <div class="col s8">
     <canvas class="pie"></canvas>
+    <canvas class="pies hide"></canvas>
   </div>
   <div class="col s4">
 
