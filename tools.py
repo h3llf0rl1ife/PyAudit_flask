@@ -93,3 +93,6 @@ def getValidationCount():
     invalid = len(models.Evaluation.query.filter_by(Validation=0).all())
 
 
+def getZoneByID(value):
+    zone = models.Zone.query.get(int(value))
+    return {"ZoneName": zone.ZoneName}
