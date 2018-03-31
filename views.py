@@ -177,5 +177,16 @@ def consultation():
 @app.route('/consulation/api')
 @login_required
 def consultation_api():
-    return jsonify()
+    queries = {}
+    queries["Zone"] = tls.getZoneByID
+
+    if request.method == "GET":
+        value = request.args.get("value")
+        field = request.args.get("field")
+
+        if None in (value, field):
+            # TODO: Add error message and better protection
+            return redirect("/")
+
+    return jsonify(result=queries[field](value))
 
