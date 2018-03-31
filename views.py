@@ -174,7 +174,7 @@ def consultation():
     return render_template('consultation.html')
 
 
-@app.route('/consulation/api')
+@app.route('/consultation/api', methods=['GET', ])
 @login_required
 def consultation_api():
     queries = {}
