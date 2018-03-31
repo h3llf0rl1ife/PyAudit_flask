@@ -69,6 +69,27 @@ def deleteEvaluation(value):
     db.session.delete(evaluation)
     db.session.commit()
 
-    return "Success"
+
+def getEvaluations():
+    evaluations = models.Evaluation.query.all()
+    evaluations_list, evaluation_dict = [], {}
+    
+    for evaluation in evaluations:
+        evaluation_dict["EvaluationID"] = evaluation.EvaluationID
+        evaluation_dict["UserID"] = evaluation.UserID
+        evaluation_dict["LocationID"] = evaluation.LocationID
+        evaluation_dict["CategoryID"] = evaluation.CategoryID
+        evaluation_dict["Date"] = evaluation.Date
+        evaluation_dict["Validation"] = evaluation.Validation
+        evaluation_dict["Comment"] = evaluation.Comment
+        evaluations_list.append(evaluation_dict)
+        evaluation_dict = {}
+    return evaluations_list
+
+
+
+def getValidationCount():
+    valid = len(models.Evaluation.query.filter_by(Validation=1).all())
+    invalid = len(models.Evaluation.query.filter_by(Validation=0).all())
 
 
