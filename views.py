@@ -171,7 +171,19 @@ def evaluation_api():
 @app.route('/consultation')
 @login_required
 def consultation():
-    return render_template('consultation.html')
+    evaluations = tls.getEvaluations()
+    zones = models.Zone.query.all()
+    
+    contexts = {}
+    contexts["showAllZones"] = True
+
+    if current_user.Profile not in ("Administrateur", "Top_managment"):
+        contexts["showAllZones"] = False
+        zones = models.Zone.query.filter_by(UserID=current_user.UserID).all()
+    
+    contexts["Zones"] = [zone.ZoneID for zone in zones]
+
+    return render_template('consultation.html', contexts=contexts)
 
 
 @app.route('/consultation/api', methods=['GET', ])
