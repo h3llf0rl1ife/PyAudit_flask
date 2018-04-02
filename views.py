@@ -181,8 +181,9 @@ def consultation():
         contexts["showAllZones"] = False
         zones = models.Zone.query.filter_by(UserID=current_user.UserID).all()
     
-    contexts["Zones"] = [zone.ZoneID for zone in zones]
+    contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
 
+    tls.getValidationCount()
     return render_template('consultation.html', contexts=contexts)
 
 
@@ -199,6 +200,6 @@ def consultation_api():
         if None in (value, field):
             # TODO: Add error message and better protection
             return redirect("/")
-
+    
     return jsonify(result=queries[field](value))
 
