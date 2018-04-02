@@ -25,7 +25,8 @@
           <div class="nav-wrapper">
             <a href="#" class="brand-logo">
               <img class="responsive-img show-on-small hide-on-med-and-up" src="{{ url_for('static', filename='images/copagLogo1.png') }}">
-              <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}"></a>
+              <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}">
+            </a>
             {% if current_user.is_authenticated %}
             <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -50,7 +51,7 @@
       </nav>
     </header>
 
-    <main>
+    <main class="">
       {% block body %}{% endblock %}
     </main>
 
