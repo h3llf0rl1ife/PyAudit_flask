@@ -89,8 +89,24 @@ def getEvaluations():
 
 
 def getValidationCount():
-    valid = len(models.Evaluation.query.filter_by(Validation=1).all())
-    invalid = len(models.Evaluation.query.filter_by(Validation=0).all())
+    zones = models.Zone.query.all()
+    criterias = models.Criteria.query.all()
+
+    v_dict, valid, invalid = {}, "", ""
+    
+    valid = models.Evaluation.query.filter_by(zone_r=zones[0]).all()
+
+    # TODO: Figure this out
+
+    #for zone in zones:
+    #    for criteria in criterias:
+            
+    for v in valid:
+        location = v.location_r
+        unit = location.unit_r
+        zone = unit.zone_r
+        date = v.Date
+
 
 
 def getZoneByID(value):
