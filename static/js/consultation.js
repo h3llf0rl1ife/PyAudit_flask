@@ -6,20 +6,20 @@ function makeLineChart(canvas, ZoneName) {
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Nombre d\'anomlies',
+                    label: 'S1',
                     data: [{t: new Date(2018, 0, 3), y: 2}, {t: new Date(2018, 3, 2), y: 3}, {t: new Date(2018, 3, 6), y: 34}, {t: new Date(2018, 3, 9), y: 9}, {t: new Date(2018, 1, 3), y: 7}, {t: new Date(2018, 3, 14), y: 12}, {t: new Date(2018, 3, 11), y: 23}, {t: new Date(2018, 3, 10), y: 4}],
-                    borderWidth: 1,
-                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 2,
+                    borderColor: 'rgba(47, 218, 124, 1)',
                     backgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 1)'
+                    pointBackgroundColor: 'rgba(47, 218, 124, 1)'
                 },
                 {
-                    label: 'Nombre d\'anomlies',
+                    label: 'S2',
                     data: [{t: new Date(2018, 0, 3), y: 9}, {t: new Date(2018, 3, 2), y: 7}, {t: new Date(2018, 3, 6), y: 5}, {t: new Date(2018, 3, 9), y: 2}, {t: new Date(2018, 1, 3), y: 1}, {t: new Date(2018, 3, 14), y: 19}, {t: new Date(2018, 3, 11), y: 29}, {t: new Date(2018, 3, 10), y: 8}],
-                    borderWidth: 1,
-                    borderColor: 'rgba(0, 0, 0, 1)',
+                    borderWidth: 2,
+                    borderColor: 'rgba(218, 47, 47, 1)',
                     backgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(0, 0, 0, 1)'
+                    pointBackgroundColor: 'rgba(218, 47, 47, 1)'
                 }]
             },
             options: {
