@@ -1,0 +1,17 @@
+@media only screen and (min-width: 601px) {
+    #table-container {
+        width: 90%;
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    #table-container {
+        width: 90%;
+    }
+}
+
+#table-container {
+    margin: 0 auto;
+    max-width: unset!important;
+    width: 90%;
+}
