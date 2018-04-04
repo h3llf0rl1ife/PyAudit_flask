@@ -6,16 +6,6 @@
 
 {% block body %}
   <div class="container">
-    {% with messages = get_flashed_messages(category_filter=['error']) %}
-      {% if messages %}
-        <ul class="flashes">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
     <form action="/evaluation/api" method="POST" enctype="multipart/form-data">
       {{ evaluation_form.csrf_token }}
       <div class="row section">
