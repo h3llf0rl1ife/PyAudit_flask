@@ -20,6 +20,9 @@
 
   <body>
     <header>
+      <ul id="account-dropdown" class="dropdown-content">
+        <li><a href="/logout"><i class="material-icons left">&#xE8AC;</i>Se déconnecter</a></li>
+      </ul>
       <nav class="nav-extended cyan darken-3">
         <div class="container">
           <div class="nav-wrapper">
@@ -28,22 +31,32 @@
               <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}">
             </a>
             {% if current_user.is_authenticated %}
+            <!-- TODO: Remove icons -->
             <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-              <li><a href="#"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}</a></li>
               {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/evaluation"><i class="material-icons left">&#xE85D;</i>Evaluation</a></li>
-              <li><a href="/consultation"><i class="material-icons left">&#xE24B;</i>Consultation</a></li>
+              <li><a href="/evaluation">Evaluation</a></li>
+              <li><a href="/dashboard">Dashboard</a></li>
               {% endif %}
-              <li><a href="/logout"><i class="material-icons left">&#xE8AC;</i>Se déconnecter</a></li>
+              <li><a class="dropdown-button" href="#" data-activates="account-dropdown"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
             <ul class="side-nav" id="mobile-nav">
-              <li><a href="#" class="nop"><i class="material-icons left nom">account_circle</i>{{ current_user.UserID }}</a></li>
+              <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                  <li>
+                    <a class="collapsible-header"><i class="material-icons left nom">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a>
+                    <div class="collapsible-body">
+                      <ul>
+                        <li><a href="/logout" class=""><i class="material-icons left nom">&#xE8AC;</i>Se déconnecter</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
               {% if current_user.Profile == "Administrateur" %}
               <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
-              <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE24B;</i>Consultation</a></li>
+              <li><a href="/dashboard" class="nop"><i class="material-icons left nom">&#xE24B;</i>Dashboard</a></li>
               {% endif %}
-              <li><a href="/logout" class="nop"><i class="material-icons left nom">&#xE8AC;</i>Se déconnecter</a></li>
             </ul>
             {% endif %}
           </div>
