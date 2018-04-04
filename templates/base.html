@@ -35,8 +35,9 @@
             <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/evaluation">Evaluation</a></li>
               <li><a href="/dashboard">Dashboard</a></li>
+              <li><a href="/evaluation">Evaluation</a></li>
+              <li><a href="/consultation">Consultation</a></li>
               {% endif %}
               <li><a class="dropdown-button" href="#" data-activates="account-dropdown"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
@@ -54,8 +55,9 @@
                 </ul>
               </li>
               {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
               <li><a href="/dashboard" class="nop"><i class="material-icons left nom">&#xE24B;</i>Dashboard</a></li>
+              <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
+              <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE880;</i>Consultation</a></li>
               {% endif %}
             </ul>
             {% endif %}
