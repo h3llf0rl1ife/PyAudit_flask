@@ -88,27 +88,32 @@ def getEvaluations():
 
 
 
-def getValidationCount():
-    zone_ids = [zone.ZoneID for zone in models.Zone.query.all()]
-    criteria_ids = [criteria.CriteriaID for criteria in models.Criteria.query.all()]
-
+def getLineChartData(value):
     inv_dict = {}
-    
     invalid = models.Evaluation.query.filter_by(Validation=0).all()
-
-    #for zone in zones:
-    #    for criteria in criterias:
             
     for v in invalid:
         location = v.location_r
         unit = location.unit_r
         zone = unit.zone_r
-        date = v.Date
+        date = v.Date.strftime("%Y, %m, %d")
         category = v.category_r
         criteria = category.criteria_r
-        
-    
 
+        
+        if zone.ZoneID not in inv_dict.keys():
+            inv_dict[zone.ZoneID] = {}
+        
+        if criteria.CriteriaID not in inv_dict[zone.ZoneID].keys():
+            inv_dict[zone.ZoneID][criteria.CriteriaID] = {}
+        
+        if date not in inv_dict[zone.ZoneID][criteria.CriteriaID].keys():
+            inv_dict[zone.ZoneID][criteria.CriteriaID][date] = 1
+        else:
+            inv_dict[zone.ZoneID][criteria.CriteriaID][date] += 1
+    
+    return inv_dict
+   
 
 def getZoneByID(value):
     zone = models.Zone.query.get(int(value))
