@@ -1,26 +1,12 @@
 function makeLineChart(canvas, ZoneName) {
+    var charts = new Array
     $.each(canvas, function(key, value) {
         var ctx = value.getContext('2d')
         let chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: [],
-                datasets: [{
-                    label: 'S1',
-                    data: [{t: new Date(2018, 0, 3), y: 2}, {t: new Date(2018, 3, 2), y: 3}, {t: new Date(2018, 3, 6), y: 34}, {t: new Date(2018, 3, 9), y: 9}, {t: new Date(2018, 1, 3), y: 7}, {t: new Date(2018, 3, 14), y: 12}, {t: new Date(2018, 3, 11), y: 23}, {t: new Date(2018, 3, 10), y: 4}],
-                    borderWidth: 2,
-                    borderColor: 'rgba(47, 218, 124, 1)',
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(47, 218, 124, 1)'
-                },
-                {
-                    label: 'S2',
-                    data: [{t: new Date(2018, 0, 3), y: 9}, {t: new Date(2018, 3, 2), y: 7}, {t: new Date(2018, 3, 6), y: 5}, {t: new Date(2018, 3, 9), y: 2}, {t: new Date(2018, 1, 3), y: 1}, {t: new Date(2018, 3, 14), y: 19}, {t: new Date(2018, 3, 11), y: 29}, {t: new Date(2018, 3, 10), y: 8}],
-                    borderWidth: 2,
-                    borderColor: 'rgba(218, 47, 47, 1)',
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
-                    pointBackgroundColor: 'rgba(218, 47, 47, 1)'
-                }]
+                datasets: []
             },
             options: {
                 title: {
@@ -31,17 +17,22 @@ function makeLineChart(canvas, ZoneName) {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            stepSize: 1
                         }
                     }],
                     xAxes: [{
                         type: 'time',
-                        position: 'bottom'
+                        position: 'bottom',
+                        time: {
+                            minUnit: 'day',
+                            //stepSize: 1
+                        },
                     }]
                 },
                 legend: {
-                    display: false,
-                    position: 'right'
+                    display: true,
+                    position: 'top'
                 },
                 elements: {
                     line: {
@@ -50,23 +41,70 @@ function makeLineChart(canvas, ZoneName) {
                 }
             }
         })
+        charts.push(chart)
     })
+    return charts
 }
 
 function getData(value, field) {
-    $.getJSON("/consultation/api", {
+    $.getJSON("/dashboard/api", {
         value: value,
         field: field
     }, function(data) {
         console.log(data.result)
-        //var canvas_list = $("#" + String(value))[0]
-        makeLineChart($(".Zone" + value), data.result.ZoneName)
+        
+        if (field === "Zone") {
+            var charts = makeLineChart($(".Zone" + value), data.result.ZoneName)
+            chartList.push([value, charts])
+
+        } else if (field === "LineChartData") {
+            $.each(data.result, function(rkey, rvalue) {
+                $.each(chartList, function(ckey, cvalue) {
+                    if (rkey === cvalue[0]) {
+                        let chart_one = cvalue[1][0]
+                        let chart_two = cvalue[1][1]
+                        $.each(rvalue, function(skey, svalue) {
+                            let label = skey
+                            let data = new Array
+                            $.each(svalue, function(dkey, dvalue) {
+                                let point = {
+                                    t: new Date(dkey),
+                                    y: dvalue
+                                }
+                                data.push(point)
+                            })
+                            let dataset = {
+                                label: label,
+                                data: data,
+                                borderWidth: 2,
+                                borderColor: colors[label],
+                                backgroundColor: 'rgba(0, 0, 0, 0)',
+                                pointBackgroundColor: colors[label]
+                            }
+                            chart_one.data.datasets.push(dataset)
+                            chart_two.data.datasets.push(dataset)
+                        })
+                        chart_one.update()
+                        chart_two.update()
+                    }
+                })
+            })
+        }
         
     })
 }
 
-//$(getData(1, "Zone"))
+var chartList = new Array
+var colors = {
+    S1: "rgba(218, 58, 47, 1)",
+    S2: "rgba(218, 207, 47, 1)",
+    S3: "rgba(81, 218, 47, 1)",
+    S4: "rgba(47, 130, 218, 1)",
+    S5: "rgba(218, 47, 210, 1)"
+}
 
 $.each($("#LineCharts canvas"), function(key, value) {
     getData($(value).attr("class").replace("Zone", ""), "Zone")
 })
+
+$(getData("novalue", "LineChartData"))
