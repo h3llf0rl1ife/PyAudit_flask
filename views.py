@@ -25,7 +25,7 @@ def index():
     if user_profile == "Administrateur":
         return redirect("/evaluation")
     else:
-        return redirect("/consultation")
+        return redirect("/dashboard")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -168,9 +168,9 @@ def evaluation_api():
     return redirect("/evaluation")
 
 
-@app.route('/consultation')
+@app.route('/dashboard')
 @login_required
-def consultation():
+def dashboard():
     evaluations = tls.getEvaluations()
     zones = models.Zone.query.all()
     
@@ -183,15 +183,16 @@ def consultation():
     
     contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
 
-    tls.getValidationCount()
-    return render_template('consultation.html', contexts=contexts)
+    tls.getLineChartData(None)
+    return render_template('dashboard.html', contexts=contexts)
 
 
-@app.route('/consultation/api', methods=['GET', ])
+@app.route('/dashboard/api', methods=['GET', ])
 @login_required
-def consultation_api():
+def dashboard_api():
     queries = {}
     queries["Zone"] = tls.getZoneByID
+    queries["LineChartData"] = tls.getLineChartData
 
     if request.method == "GET":
         value = request.args.get("value")
@@ -203,3 +204,26 @@ def consultation_api():
     
     return jsonify(result=queries[field](value))
 
+
+@app.route('/consultation')
+@login_required
+def consultation():
+    contexts = {}
+    
+    return render_template('consultation.html', contexts=contexts)
+
+
+@app.route('/consultation/api', methods=['GET', ])
+@login_required
+def consultation_api():
+    queries = {}
+
+    if request.method == "GET":
+        value = request.args.get("value")
+        field = request.args.get("field")
+
+        if None in (value, field):
+            # TODO: Add error message and better protection
+            return redirect("/")
+    
+    return jsonify(result=queries[field](value))
