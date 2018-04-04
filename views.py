@@ -40,6 +40,7 @@ def login():
         user = models.User.query.filter_by(UserID=user_id, password=password).first()
         
         if user == None:
+            flash("Identifiant ou mot de passe erroné. Veuillez réessayer.", "error")
             return redirect('/login')
         else:
             login_user(user)
