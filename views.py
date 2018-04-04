@@ -28,7 +28,7 @@ def index():
         return redirect("/dashboard")
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect("/")
@@ -49,7 +49,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     logout_user()
@@ -168,7 +168,7 @@ def evaluation_api():
     return redirect("/evaluation")
 
 
-@app.route('/dashboard')
+@app.route('/dashboard/')
 @login_required
 def dashboard():
     evaluations = tls.getEvaluations()
@@ -205,7 +205,7 @@ def dashboard_api():
     return jsonify(result=queries[field](value))
 
 
-@app.route('/consultation')
+@app.route('/consultation/')
 @login_required
 def consultation():
     contexts = {}
