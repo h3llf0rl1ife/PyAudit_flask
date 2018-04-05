@@ -2,79 +2,134 @@
 
 {% block head %}
 <link href="{{ url_for('static', filename='css/consultation.css') }}" rel="stylesheet">
+<link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 <div class="container" id="table-container">
-  <div class="row">
-
+  <div class="card-panel">
+    <div class="row">
+      <div class="input-field col s1">
+        <input type="text" class="datepicker" id="dateFrom">
+        <label for="dateFrom">De</label>
+      </div>
+      <div class="input-field col s1">
+        <input type="text" class="datepicker" id="dateTo">
+        <label for="dateTo">À</label>
+      </div>
+      <div class="input-field col s1">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label >Site</label>
+      </div>
+      <div class="input-field col s1">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Zone</label>
+      </div>
+      <div class="input-field col s1">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Unit</label>
+      </div>
+      <div class="input-field col s1">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Nature</label>
+      </div>
+      <div class="input-field col s2">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Critère d'evaluation</label>
+      </div>
+      <div class="input-field col s3">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Rubrique</label>
+      </div>
+      <div class="input-field col s1">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Validation</label>
+      </div>
+    </div>
   </div>
-  
-  <table class="responsive-table highlight bordered">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Site</th>
-        <th>Zone</th>
-        <th>Unité</th>
-        <th>Nature</th>
-        <th>Désignation</th>
-        <th>Critère d'evaluation</th>
-        <th>Rubrique</th>
-        <th>Validation</th>
-        <th>Remarque</th>
-        <th>Pièces jointes</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div class="card-panel">
+    <table class="" id="dataTable">
+      <thead class="">
+        <tr>
+          <th>Date</th>
+          <th>Site</th>
+          <th>Zone</th>
+          <th>Unité</th>
+          <th>Nature</th>
+          <th>Désignation</th>
+          <th>Critère d'evaluation</th>
+          <th>Rubrique</th>
+          <th>Validation</th>
+          <th>Remarque</th>
+          <th>Pièces jointes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr>
-        <td>20/03/2018</td>
-        <td>COPAG Siège</td>
-        <td>COPAG Siège Ouest</td>
-        <td>Support</td>
-        <td>Bâtiment</td>
-        <td>Bloc social</td>
-        <td>TENIR RANGER</td>
-        <td>Y a-t-il des objets inutiles ?</td>
-        <td>Non</td>
-        <td>bla bla</td>
-        <td>image.jpg</td>
-        <td>Modifier Supprimer</td>
-      </tr>
-      <tr>
-        <td>20/03/2018</td>
-        <td>COPAG Siège</td>
-        <td>COPAG Siège Ouest</td>
-        <td>Support</td>
-        <td>Bâtiment</td>
-        <td>Bloc social</td>
-        <td>TENIR RANGER</td>
-        <td>Y a-t-il des objets inutiles ?</td>
-        <td>Non</td>
-        <td>bla bla</td>
-        <td>image.jpg</td>
-        <td>Modifier Supprimer</td>
-      </tr>
-      <tr>
-        <td>20/03/2018</td>
-        <td>COPAG Siège</td>
-        <td>COPAG Siège Ouest</td>
-        <td>Support</td>
-        <td>Bâtiment</td>
-        <td>Bloc social</td>
-        <td>TENIR RANGER</td>
-        <td>Y a-t-il des objets inutiles ?</td>
-        <td>Non</td>
-        <td>bla bla</td>
-        <td>image.jpg</td>
-        <td>Modifier Supprimer</td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr>
+          <td>20/03/2018</td>
+          <td>COPAG Siège</td>
+          <td>COPAG Siège Ouest</td>
+          <td>Support</td>
+          <td>Bâtiment</td>
+          <td>Bloc social</td>
+          <td>TENIR RANGER</td>
+          <td>Y a-t-il des objets inutiles ?</td>
+          <td>Non</td>
+          <td>bla bla</td>
+          <td>image.jpg</td>
+          <td>Modifier Supprimer</td>
+        </tr>
+        <tr>
+          <td>21/03/2018</td>
+          <td>COPAG Siège</td>
+          <td>COPAG Siège Ouest</td>
+          <td>Support</td>
+          <td>Bâtiment</td>
+          <td>Bloc social</td>
+          <td>TENIR RANGER</td>
+          <td>Y a-t-il des objets inutiles ?</td>
+          <td>Non</td>
+          <td>bla bla</td>
+          <td>image.jpg</td>
+          <td>Ajouter Supprimer</td>
+        </tr>
+        <tr>
+          <td>20/03/2017</td>
+          <td>COPAG Siège</td>
+          <td>COPAG Siège Ouest</td>
+          <td>Support</td>
+          <td>Bâtiment</td>
+          <td>Bloc social</td>
+          <td>TENIR RANGER</td>
+          <td>Y a-t-il des objets inutiles ?</td>
+          <td>Non</td>
+          <td>bla bla</td>
+          <td>image.jpg</td>
+          <td>Modifier Supprimer</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock %}
 
 {% block javascript %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/consultation.js') }}"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 {% endblock %}
