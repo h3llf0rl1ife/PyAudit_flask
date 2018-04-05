@@ -2,7 +2,6 @@
 
 {% block head %}
 <link href="{{ url_for('static', filename='css/consultation.css') }}" rel="stylesheet">
-<link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
@@ -62,7 +61,7 @@
     </div>
   </div>
   <div class="card-panel">
-    <table class="" id="dataTable">
+    <table class="responsive-table highlight bordered" id="dataTable">
       <thead class="">
         <tr>
           <th>Date</th>
@@ -131,5 +130,4 @@
 
 {% block javascript %}
 <script type="text/javascript" src="{{ url_for('static', filename='js/consultation.js') }}"></script>
-<script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 {% endblock %}

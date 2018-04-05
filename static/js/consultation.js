@@ -20,5 +20,9 @@ $(function() {
 
     });
     $('select').material_select();
-    $('#dataTable').DataTable();
+
+    $('th').on('click', function() {
+        console.log($(this).text())
+        console.log($('td', $('#dataTable tr')[1])[10])
+    })
 });
