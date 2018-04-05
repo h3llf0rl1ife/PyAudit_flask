@@ -9,14 +9,6 @@
     <form action="/evaluation/api" method="POST" enctype="multipart/form-data">
       {{ evaluation_form.csrf_token }}
       <div class="row section">
-        <div class="valign-wrapper" id="evaluationID-wrapper">
-          <span class="col s8 m9 l9"></span>
-          <span class="right-align col s2 m2 l2">Index</span>
-          <input class="center-align col s2 m1 l1 input-field" id="i-EvaluationID" value="{{ contexts.evaluationID }}" type="text" disabled>
-        </div>
-      </div>
-
-      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Site</span>
           <select class="col s8 m9 l10 browser-default" id="i-Site" required>
@@ -28,7 +20,7 @@
         </div>
       </div>
 
-      <div class="row section">
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Zone</span>
           <select class="col s8 m9 l10 browser-default" id="i-Zone" required>
@@ -37,7 +29,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Unit&eacute;</span>
           <select class="col s8 m9 l10 browser-default" id="i-Unit" required>
@@ -46,7 +38,7 @@
         </div>
       </div>
 
-      <div class="row section">
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Localisation</span>
           <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID" required>
@@ -55,7 +47,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Crit&egrave;re d'&eacute;valuation</span>
           <select class="col s8 m9 l10 browser-default" id="i-Criteria" required>
@@ -67,7 +59,7 @@
         </div>
       </div>
 
-      <div class="row section">
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Rubrique</span>
           <select class="col s8 m9 l10 browser-default" id="i-Category" name="CategoryID" required>
@@ -76,7 +68,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Validation</span>
           <select class="col s8 m9 l10 browser-default" id="i-Validation" name="Validation" required>
@@ -87,14 +79,14 @@
         </div>
       </div>
 
-      <div class="row section">
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Remarque</span>
           <textarea class="col s8 m9 l10 materialize-textarea" id="i-Comment" name="Comment"></textarea>
         </div>
       </div>
 
-      <div class="file-field input-field">
+      <div class="file-field input-field section">
         <div class="btn waves-effect waves-light">
           <i class="material-icons" id="attach-btn">attachment</i>
           <input type="file" id="i-File" name="Attachment" multiple>
@@ -107,33 +99,7 @@
       <div class="divider"></div>
       <div class="section">
         <div class="row" id="form-buttons">
-          <div class="col s4">
-            <div class="row">
-              <div class="col s10 push-s2">
-                <button class="col s12 hide-on-small-only show-on-medium-and-up truncate waves-effect waves-light btn green btn-ajouter" type="submit"><i class="material-icons left pnom">add</i>Ajouter</button>
-                <button class="hide-on-med-and-up show-on-small btn-floating btn-large waves-effect waves-light green btn-ajouter" type="submit"><i class="material-icons">add</i></button>
-
-                <button class="col s12 hide-on-small-only show-on-medium-and-up truncate waves-effect waves-light btn green hide btn-enregistrer" type="submit"><i class="material-icons left pnom">check</i>Enregistrer</button>
-                <button class="hide-on-med-and-up show-on-small btn-floating btn-large waves-effect waves-light green hide btn-enregistrer" type="submit"><i class="material-icons">check</i></button>
-
-              </div>
-            </div>
-          </div>
-          <div class="col s8">
-            <div class="row">
-              <div class="col s5 offset-s1">
-                <button class="col s12 hide-on-small-only show-on-medium-and-up truncate waves-effect waves-light btn blue btn-modifier" type="button"><i class="material-icons left pnom">edit</i>Modifier</button>
-                <button class="hide-on-med-and-up show-on-small btn-floating btn-large waves-effect waves-light blue btn-modifier" type="button"><i class="material-icons">edit</i></button>
-
-                <a class="col s12 hide-on-small-only show-on-medium-and-up truncate waves-effect waves-light btn blue hide btn-annuler" href="/evaluation"><i class="material-icons left pnom">close</i>Annuler</a>
-                <a class="hide-on-med-and-up show-on-small btn-floating btn-large waves-effect waves-light blue hide btn-annuler" href="/evaluation"><i class="material-icons">close</i></a>
-              </div>
-              <div class="col s5">
-                <button class="col s12 hide-on-small-only show-on-medium-and-up truncate waves-effect waves-light btn red disabled btn-supprimer" type="button"><i class="material-icons left pnom">delete</i>Supprimer</button>
-                <button class="hide-on-med-and-up show-on-small btn-floating btn-large waves-effect waves-light red disabled btn-supprimer" type="button"><i class="material-icons">delete</i></button>
-              </div>
-            </div>
-          </div>
+          <button class="col s10 offset-s1 truncate waves-effect waves-light btn green btn-ajouter" type="submit">Ajouter</button>
         </div>
       </div>
     </form>
