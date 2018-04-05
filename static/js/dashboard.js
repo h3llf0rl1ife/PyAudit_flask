@@ -26,7 +26,7 @@ function makeLineChart(canvas, ZoneName) {
                         position: 'bottom',
                         time: {
                             minUnit: 'day',
-                            //stepSize: 1
+                            stepSize: 1
                         },
                     }]
                 },
