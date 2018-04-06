@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
     $('select').material_select();
 });
 
@@ -8,7 +8,7 @@ $("#i-Site").on("change", function() {
     removeOptions("LocationType")
     removeOptions("Location")
     
-    getData($("#i-Site").val(), "Zone")
+    getData($(this).val(), "Zone")
 })
 
 $("#i-Zone").on("change", function() {
@@ -16,14 +16,14 @@ $("#i-Zone").on("change", function() {
     removeOptions("LocationType")
     removeOptions("Location")
     
-    getData($("#i-Zone").val(), "Unit")
+    getData($(this).val(), "Unit")
 })
 
 $("#i-Unit").on("change", function() {
     removeOptions("LocationType")
     removeOptions("Location")
 
-    getData($("#i-Unit").val(), "Location")
+    getData($(this).val(), "LocationType")
 })
 
 $("#i-LocationType").on("change", function() {
@@ -34,10 +34,10 @@ $("#i-LocationType").on("change", function() {
 
 $("#i-Criteria").on("change", function() {
     removeOptions("Category")
-    getData($("#i-Criteria").val(), "Category")
+    getData($(this).val(), "Category")
 })
 
-$(".btn-modifier").on("click", function() {
+/*$(".btn-modifier").on("click", function() {
     $(".btn-ajouter").addClass("hide")
     $(".btn-enregistrer").removeClass("hide")
     $(".btn-modifier").addClass("hide")
@@ -75,7 +75,7 @@ $(".btn-modifier").on("click", function() {
             btn_supprimer.removeClass("disabled")
         }
 
-        var index_val = $("#i-EvaluationID").val()
+        var index_val = $(this).val()
         
         btn_supprimer.on("click", function() {
             
@@ -88,7 +88,7 @@ $(".btn-modifier").on("click", function() {
 
         getData(index_val, "Evaluation")
     })
-})
+})*/
 
 function getData(value, field) {
     $.getJSON("/evaluation/api", {
@@ -105,14 +105,14 @@ function getData(value, field) {
                     .attr("value", val[field + "ID"])
                     .text(val["Description"]));
             });
-        } else if (field === "EvaluationID") {
+        /*} else if (field === "EvaluationID") {
             $.each(data.result, function(key, val) {
                 $('#i-' + field).append(
                     $("<option></option>")
                     .attr("value", val)
                     .text(val));
             })
-        } else if (field === "Evaluation") {
+        } else if (field === "Evaluation") {*/
             
         } else {
             removeOptions(field)
@@ -131,7 +131,7 @@ function removeOptions(field) {
     $('#i-' + field).children("option:not(:first)").remove()
 }
 
-function postData(value, field) {
+/*function postData(value, field) {
     $.post("/evaluation/api", {
         value: value,
         field: field
@@ -141,4 +141,4 @@ function postData(value, field) {
         console.log("deleted")
     }
     })
-}
+}*/

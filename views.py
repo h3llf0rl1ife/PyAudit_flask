@@ -68,7 +68,7 @@ def evaluation():
     contexts = {}
     contexts["sites"] = models.Site.query.all()
     contexts["criterias"] = models.Criteria.query.all()
-    contexts["evaluationID"] = tls.getLatestEvaluationID_plusOne()
+    #contexts["evaluationID"] = tls.getLatestEvaluationID_plusOne()
 
     return render_template('evaluation.html', contexts=contexts, evaluation_form=evaluation_form)
 
@@ -88,8 +88,8 @@ def evaluation_api():
     queries["LocationType"] = tls.getLocationType
     queries["Location"] = tls.getLocation
     queries["Category"] = tls.getCategory
-    queries["EvaluationID"] = tls.getEvaluationID
-    queries["Evaluation"] = tls.getEvaluation
+    #queries["EvaluationID"] = tls.getEvaluationID
+    #queries["Evaluation"] = tls.getEvaluation
     
 
     if request.method == "GET":
