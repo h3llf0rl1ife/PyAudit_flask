@@ -1,11 +1,4 @@
 var chartList = new Array
-const colors = {
-    S1: "rgba(218, 58, 47, 1)",
-    S2: "rgba(218, 207, 47, 1)",
-    S3: "rgba(81, 218, 47, 1)",
-    S4: "rgba(47, 130, 218, 1)",
-    S5: "rgba(218, 47, 210, 1)"
-}
 
 $(function() {
     getData("novalue", "LineChartData");
@@ -84,7 +77,14 @@ function getData(value, field) {
 
 
 function makeLineChart(canvas, ZoneName) {
-    var charts = new Array
+    const colors = {
+        S1: "rgba(218, 58, 47, 1)",
+        S2: "rgba(218, 207, 47, 1)",
+        S3: "rgba(81, 218, 47, 1)",
+        S4: "rgba(47, 130, 218, 1)",
+        S5: "rgba(218, 47, 210, 1)"
+    };
+    var charts = new Array;
     $.each(canvas, function(key, value) {
         var ctx = value.getContext('2d')
         let chart = new Chart(ctx, {
