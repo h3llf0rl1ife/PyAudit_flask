@@ -40,14 +40,23 @@
 
       <div class="row">
         <div class="valign-wrapper">
-          <span class="col s4 m3 l2">Localisation</span>
-          <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID" required>
+          <span class="col s4 m3 l2">Nature</span>
+          <select class="col s8 m9 l10 browser-default" id="i-LocationType" required>
             <option value="" disabled selected>Selectionner</option>
           </select>
         </div>
       </div>
 
       <div class="row section">
+        <div class="valign-wrapper">
+          <span class="col s4 m3 l2">Désignation</span>
+          <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID" required>
+            <option value="" disabled selected>Selectionner</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Crit&egrave;re d'&eacute;valuation</span>
           <select class="col s8 m9 l10 browser-default" id="i-Criteria" required>
@@ -59,7 +68,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Rubrique</span>
           <select class="col s8 m9 l10 browser-default" id="i-Category" name="CategoryID" required>
@@ -68,7 +77,7 @@
         </div>
       </div>
 
-      <div class="row section">
+      <div class="row">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Validation</span>
           <select class="col s8 m9 l10 browser-default" id="i-Validation" name="Validation" required>
@@ -79,14 +88,14 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row section">
         <div class="valign-wrapper">
           <span class="col s4 m3 l2">Remarque</span>
           <textarea class="col s8 m9 l10 materialize-textarea" id="i-Comment" name="Comment"></textarea>
         </div>
       </div>
 
-      <div class="file-field input-field section">
+      <div class="file-field input-field">
         <div class="btn waves-effect waves-light">
           <i class="material-icons" id="attach-btn">attachment</i>
           <input type="file" id="i-File" name="Attachment" multiple>
