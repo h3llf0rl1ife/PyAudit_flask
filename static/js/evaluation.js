@@ -5,6 +5,7 @@ $(document).ready(function() {
 $("#i-Site").on("change", function() {
     removeOptions("Zone")
     removeOptions("Unit")
+    removeOptions("LocationType")
     removeOptions("Location")
     
     getData($("#i-Site").val(), "Zone")
@@ -12,15 +13,23 @@ $("#i-Site").on("change", function() {
 
 $("#i-Zone").on("change", function() {
     removeOptions("Unit")
+    removeOptions("LocationType")
     removeOptions("Location")
     
     getData($("#i-Zone").val(), "Unit")
 })
 
 $("#i-Unit").on("change", function() {
+    removeOptions("LocationType")
     removeOptions("Location")
 
     getData($("#i-Unit").val(), "Location")
+})
+
+$("#i-LocationType").on("change", function() {
+    removeOptions("Location")
+
+    getData($(this).val(), "Location")
 })
 
 $("#i-Criteria").on("change", function() {
@@ -88,7 +97,7 @@ function getData(value, field) {
     }, function(data) {
         console.log(data.result)
         
-        if (field === "Category") {
+        if (field === "Category" || field === "LocationType") {
             removeOptions(field)
             $.each(data.result, function(key, val) {
                 $('#i-' + field).append(
