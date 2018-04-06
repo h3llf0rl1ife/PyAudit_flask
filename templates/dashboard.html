@@ -27,86 +27,82 @@
       </div>
     </div>
     {% endfor %}
-    </div>
+  </div>
 
-    <div class="show-on-medium-and-up hide-on-small-only">
-      {% for zone in contexts.Zones %}
-        {% if loop.index is not divisibleby(2) %}
-        <div class="row section">
-        {% endif %}
-
-          <div class="col s6">
-            <div class="card pt1">
-              <div class="card-image">
-                <canvas class="Zone{{ zone.ZoneID }}"></canvas>
-              </div>
-              <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">more_vert</i></span>
-                <p><a href="#">This is a link</a></p>
-              </div>
-              <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
-                <p>Here is some more information about this product that is only revealed once clicked on.</p>
-              </div>
+  <div class="show-on-medium-and-up hide-on-small-only">
+    {% for zone in contexts.Zones %}
+      {% if loop.index is not divisibleby(2) %}
+      <div class="row section">
+      {% endif %}
+        <div class="col s6">
+          <div class="card pt1">
+            <div class="card-image">
+              <canvas class="Zone{{ zone.ZoneID }}"></canvas>
+            </div>
+            <div class="card-content">
+              <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">more_vert</i></span>
+              <p><a href="#">This is a link</a></p>
+            </div>
+            <div class="card-reveal">
+              <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
+              <p>Here is some more information about this product that is only revealed once clicked on.</p>
             </div>
           </div>
-        {% if loop.index is divisibleby(2) %}
         </div>
-        {% endif %}
+      {% if loop.index is divisibleby(2) %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 
-      {% endfor %}
+
+  <div class="card-panel">
+    <div class="row">
+      <div class="input-field col s2">
+        <input type="text" class="datepicker" id="dateFrom">
+        <label for="dateFrom">De</label>
+      </div>
+      <div class="input-field col s2">
+        <input type="text" class="datepicker" id="dateTo">
+        <label for="dateTo">À</label>
+      </div>
+      <div class="input-field col s2">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label >Site</label>
+      </div>
+      <div class="input-field col s2">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Zone</label>
+      </div>
+      <div class="input-field col s2">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Unité</label>
+      </div>
+      <div class="input-field col s2">
+        <select>
+          <option value="" disabled selected>Choisir</option>
+        </select>
+        <label>Nature</label>
+      </div>
     </div>
-  
-  
+  </div>
 
-<div class="show-on-medium-and-down hide-on-large-only">
-  <div class="row section">
-    <div class="col s12">
-      <canvas class="Zone_one"></canvas>
+  <div class="card">
+    <div class="card-image section">
+      <canvas class="pie"></canvas>
+      <canvas class="pies hide"></canvas>
+    </div>
+    <div class="card-content">
+      <div class="divider"></div>
+      <div class="card-title section">Card Title</div>
     </div>
   </div>
-  <div class="row section">
-    <div class="col s12">
-      <canvas class="Zone_two"></canvas>
-    </div>
-  </div>
-  <div class="row section">
-    <div class="col s12">
-      <canvas class="Zone_three"></canvas>
-    </div>
-  </div>
-  <div class="row section">
-    <div class="col s12">
-      <canvas class="Zone_four"></canvas>
-    </div>
-  </div>
-</div>
-
-<div class="row section">
-  <div class="col s12" id="map" style="height: 25rem;"></div>
-</div>
-
-<div class="row section">
-  <div class="valign-wrapper">
-    <span class="left-align col s2 m2 l2">Local</span>
-    <select class="center-align col s4 m3 l3 browser-default" id="i-AreaID">
-      <option value="">Zone</option>
-    </select>
-    <span class="col s6 m7 l7"></span>
-  </div>
-</div>
-
-<div class="row section">
-  <div class="col s8">
-    <canvas class="pie"></canvas>
-    <canvas class="pies hide"></canvas>
-  </div>
-  <div class="col s4">
-
-  </div>
-</div>
-
-
 
   
 </div>
@@ -117,7 +113,7 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet/leaflet.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
   <script>
-    const map = L.map('map').setView([30.5090965, -8.7930388,17], 14);
+    /*const map = L.map('map').setView([30.5090965, -8.7930388,17], 14);
     const osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     const osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 18, attribution: osmAttrib});
@@ -141,7 +137,7 @@
             ]
         }
     
-    L.geoJSON(geojson_data).addTo(map);
+    L.geoJSON(geojson_data).addTo(map);*/
     
     const pie_ctx = $(".pie")[0].getContext("2d")
     const pie = new Chart(pie_ctx, {
@@ -161,7 +157,7 @@
         },
         options: {
             title: {
-                  display: true,
+                  display: false,
                   position: 'top',
                   text: 'Audit 5S'
               },
@@ -212,7 +208,7 @@
         data: pies_data,
         options: {
             title: {
-                  display: true,
+                  display: false,
                   position: 'top',
                   text: 'Audit 5S'
               },
