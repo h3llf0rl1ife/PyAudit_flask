@@ -95,7 +95,7 @@ function getData(value, field) {
 }
 
 var chartList = new Array
-var colors = {
+const colors = {
     S1: "rgba(218, 58, 47, 1)",
     S2: "rgba(218, 207, 47, 1)",
     S3: "rgba(81, 218, 47, 1)",
