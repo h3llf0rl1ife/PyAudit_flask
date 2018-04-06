@@ -85,6 +85,7 @@ def evaluation_api():
     queries = {}
     queries["Zone"] = tls.getZone
     queries["Unit"] = tls.getUnit
+    queries["LocationType"] = tls.getLocationType
     queries["Location"] = tls.getLocation
     queries["Category"] = tls.getCategory
     queries["EvaluationID"] = tls.getEvaluationID

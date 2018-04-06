@@ -19,6 +19,13 @@ def getUnit(value):
     return [{"UnitID": unit.UnitID, "UnitName": unit.UnitName} for unit in units]
 
 
+def getLocationType(value):
+    locations = models.Location.query.filter_by(UnitID=value).all()
+    location_types = [location.location_type_r for location in locations]
+    location_types = list(set(location_types))
+    return [{"LocationTypeID": location_type.LocationTypeID, "Description": location_type.Description} for location_type in location_types]
+
+
 def getLocation(value):
     locations = models.Location.query.filter_by(UnitID=value).all()
     return [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
