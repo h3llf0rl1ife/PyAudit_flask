@@ -1,6 +1,6 @@
 import json
 import os.path
-
+import datetime
 from flask import request, render_template, jsonify, Response, redirect, flash
 from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.utils import secure_filename
@@ -178,6 +178,7 @@ def dashboard():
     
     contexts = {}
     contexts["showAllZones"] = True
+    contexts["sites"] = models.Site.query.all()
 
     if current_user.Profile not in ("Administrateur", "Top_managment"):
         contexts["showAllZones"] = False
@@ -185,7 +186,6 @@ def dashboard():
     
     contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
 
-    tls.getLineChartData(None)
     return render_template('dashboard.html', contexts=contexts)
 
 
@@ -193,8 +193,13 @@ def dashboard():
 @login_required
 def dashboard_api():
     queries = {}
-    queries["Zone"] = tls.getZoneByID
+    queries["ZoneChart"] = tls.getZoneByID
     queries["LineChartData"] = tls.getLineChartData
+    queries["PieChartData"] = tls.getPieChartData
+    queries["Zone"] = tls.getZone
+    queries["Unit"] = tls.getUnit
+    queries["LocationType"] = tls.getLocationType
+    queries["Location"] = tls.getLocation
 
     if request.method == "GET":
         value = request.args.get("value")

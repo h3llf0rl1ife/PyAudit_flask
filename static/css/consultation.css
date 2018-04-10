@@ -15,3 +15,8 @@
     max-width: unset!important;
     width: 90%;
 }
+
+th:hover {
+    background-color:lightgrey;
+    cursor: pointer
+}

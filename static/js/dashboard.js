@@ -1,7 +1,16 @@
 var chartList = new Array
+var pieChartDetail = "";
+var pieChart = "";
+var pieChartBackupData = {};
+const colors = {
+    S1: "rgba(218, 58, 47, 1)",
+    S2: "rgba(218, 207, 47, 1)",
+    S3: "rgba(81, 218, 47, 1)",
+    S4: "rgba(47, 130, 218, 1)",
+    S5: "rgba(218, 47, 210, 1)"
+};
 
 $(function() {
-    getData("novalue", "LineChartData");
     $('select').material_select();
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
@@ -9,7 +18,7 @@ $(function() {
         closeOnSelect: false, // Close upon selecting a date,
         container: undefined, // ex. 'body' will append picker to body
         today: 'Aujourd\'hui',
-        clear: 'Vider',
+        clear: 'Effacer',
         close: 'Ok',
         labelMonthNext: 'Mois suivant',
         labelMonthPrev: 'Mois précedant',
@@ -22,7 +31,67 @@ $(function() {
         weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
     });
     $.each($("#LineCharts canvas"), function(key, value) {
-        getData($(value).attr("class").replace("Zone", ""), "Zone")
+        getData($(value).attr("class").replace("Zone", ""), "ZoneChart")
+    })
+    pieChart = makePieChart($("#PieChart"))
+
+    getData("novalue", "LineChartData");
+
+    $('#Search').on('click', function() {
+        let value = {
+            dateFrom: $("#dateFrom").val(),
+            dateTo: $("#dateTo").val(),
+            SiteID: $("#SiteID").val(),
+            ZoneID: $("#ZoneID").val(),
+            UnitID: $("#UnitID").val(),
+            LocationTypeID: $("#LocationTypeID").val(),
+            LocationID: $("#LocationID").val()
+        }
+        $('#Return').removeClass('show').addClass('hide')
+        getData(JSON.stringify(value), "PieChartData");
+    })
+    $('#Search').trigger('click')
+    $('#Return').on('click', function() {
+        $(this).removeClass('show').addClass('hide')
+        pieChart["data"]["datasets"][0]["data"] = pieChartBackupData['data']
+        pieChart["data"]["datasets"][0]["backgroundColor"] = pieChartBackupData['backgroundColor']
+        pieChart.data.labels = pieChartBackupData['labels']
+        pieChart.options.title.display = false
+        pieChart.update()
+        disableHandler()
+        enableHandler()
+    })
+    $("#SiteID").on("change", function() {
+        removeOptions("Zone")
+        removeOptions("Unit")
+        removeOptions("LocationType")
+        removeOptions("Location")
+        
+        getData($(this).val(), "Zone")
+    })
+    
+    $("#ZoneID").on("change", function() {
+        removeOptions("Unit")
+        removeOptions("LocationType")
+        removeOptions("Location")
+        
+        getData($(this).val(), "Unit")
+    })
+    
+    $("#UnitID").on("change", function() {
+        removeOptions("LocationType")
+        removeOptions("Location")
+    
+        getData($(this).val(), "LocationType")
+    })
+    
+    $("#LocationTypeID").on("change", function() {
+        removeOptions("Location")
+        let value = {
+            LocationTypeID: $(this).val(),
+            UnitID: $("#UnitID").val()
+        }
+        getData(JSON.stringify(value), "Location")
     })
 })
 
@@ -34,7 +103,7 @@ function getData(value, field) {
     }, function(data) {
         console.log(data.result)
         
-        if (field === "Zone") {
+        if (field === "ZoneChart") {
             var charts = makeLineChart($(".Zone" + value), data.result.ZoneName)
             chartList.push([value, charts])
 
@@ -70,20 +139,66 @@ function getData(value, field) {
                     }
                 })
             })
+        } else if (field === "PieChartData") {
+            let pie_data = {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: []
+                }]
+            }
+            pieChartDetail = {}
+            if (!($.isEmptyObject(data.result))) {
+                $.each(data.result, function(ckey, cvalue) {
+                    pie_data["labels"].push(cvalue["Description"])
+                    pie_data["datasets"][0]["data"].push(cvalue["Total"])
+                    pie_data["datasets"][0]["backgroundColor"].push(colors[ckey])
+                    pieChartDetail[cvalue["Description"]] = cvalue["Detail"]
+                })
+                pieChartBackupData["labels"] = pie_data["labels"].slice(0, pie_data["labels"].length)
+                pieChartBackupData["data"] = pie_data["datasets"][0]["data"].slice(0, pie_data["datasets"][0]["data"].length)
+                pieChartBackupData["backgroundColor"] = pie_data["datasets"][0]["backgroundColor"].slice(0, pie_data["datasets"][0]["backgroundColor"].length)
+                pieChart.data = pie_data
+                pieChart.options.tooltips.enabled = true
+                disableHandler()
+                enableHandler()
+            } else {
+                pieChart.data = {
+                    labels: ["Aucune donnée"],
+                    datasets: [{
+                    data: [1],
+                    backgroundColor: ["rgba(150, 150, 150, 1)"]
+                }]
+                }
+                pieChart.options.tooltips.enabled = false
+                $('#PieChart').off('click')
+            }
+            pieChart.options.title.display = false
+            pieChart.update()
+        } else if (field === "LocationType") {
+            removeOptions(field)
+            $.each(data.result, function(key, val) {
+                $('#' + field + 'ID').append(
+                    $("<option></option>")
+                    .attr("value", val[field + "ID"])
+                    .text(val["Description"]));
+            });
+            $('select').material_select();
+        } else {
+            removeOptions(field)
+            $.each(data.result, function(key, val) {
+                $('#' + field + 'ID').append(
+                    $("<option></option>")
+                    .attr("value", val[field + "ID"])
+                    .text(val[field + "Name"]));
+            });
+            $('select').material_select();
         }
-        
     })
 }
 
 
 function makeLineChart(canvas, ZoneName) {
-    const colors = {
-        S1: "rgba(218, 58, 47, 1)",
-        S2: "rgba(218, 207, 47, 1)",
-        S3: "rgba(81, 218, 47, 1)",
-        S4: "rgba(47, 130, 218, 1)",
-        S5: "rgba(218, 47, 210, 1)"
-    };
     var charts = new Array;
     $.each(canvas, function(key, value) {
         var ctx = value.getContext('2d')
@@ -123,10 +238,81 @@ function makeLineChart(canvas, ZoneName) {
                     line: {
                         tension: 0.1,
                     }
-                }
+                },
+                maintainAspectRatio: false
             }
         })
         charts.push(chart)
     })
     return charts
+}
+
+function makePieChart(canvas) {
+    var pie_ctx = "";
+    $.each(canvas, function(key, value) {
+        pie_ctx = value.getContext('2d')
+    })
+    let pie_chart = new Chart(pie_ctx, {
+        type: 'pie',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: []
+            }]
+        },
+        options: {
+            title: {
+                  display: false,
+                  position: 'top',
+                  text: ''
+            },
+            legend: {
+                position: "top",
+            },
+            animation: {
+                animateRotate: false
+            },
+            maintainAspectRatio: false
+        }
+    })
+    return pie_chart
+}
+
+function PieClickHandler(e) {
+    let firstPoint = pieChart.getElementAtEvent(e)[0];
+
+    if (firstPoint) {
+        let label = pieChart.data.labels[firstPoint._index];
+        let pie_labels = []
+        let pie_data = []
+        
+        $.each(pieChartDetail[label], function(ckey, cvalue) {
+            pie_labels.push(ckey)
+            pie_data.push(cvalue)
+        })
+
+        pieChart.data.labels = pie_labels.slice(0, pie_labels.length)
+        pieChart["data"]["datasets"][0]["data"] = pie_data.slice(0, pie_data.length)
+        pieChart.options.title.display = true
+        pieChart.options.title.text = label
+        pieChart.update()
+        disableHandler()
+        $('#Return').removeClass('hide').addClass('show')
+    }
+}
+
+function enableHandler() {
+    $('#PieChart').on('click', function(evt) {
+        PieClickHandler(evt)
+    })
+}
+
+function disableHandler() {
+    $('#PieChart').off('click')
+}
+
+function removeOptions(field) {
+    $('#' + field + "ID")[0].selectedIndex = 0
+    $('#' + field + "ID").children("option:not(:first)").remove()
 }

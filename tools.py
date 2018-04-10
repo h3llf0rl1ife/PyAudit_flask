@@ -1,5 +1,9 @@
 # Functions needed for views or other
 
+import json
+import datetime
+import dateparser
+from sqlalchemy import and_, func
 from PyAudit_flask import db
 from PyAudit_flask import models
 
@@ -97,10 +101,10 @@ def getEvaluations():
 
 
 def getLineChartData(value):
-    inv_dict = {}
-    invalid = models.Evaluation.query.filter_by(Validation=0).all()
+    eval_dict = {}
+    evaluations = models.Evaluation.query.filter_by(Validation=0).all()
             
-    for v in invalid:
+    for v in evaluations:
         location = v.location_r
         unit = location.unit_r
         zone = unit.zone_r
@@ -109,18 +113,85 @@ def getLineChartData(value):
         criteria = category.criteria_r
 
         
-        if zone.ZoneID not in inv_dict.keys():
-            inv_dict[zone.ZoneID] = {}
+        if zone.ZoneID not in eval_dict.keys():
+            eval_dict[zone.ZoneID] = {}
         
-        if criteria.CriteriaID not in inv_dict[zone.ZoneID].keys():
-            inv_dict[zone.ZoneID][criteria.CriteriaID] = {}
+        if criteria.CriteriaID not in eval_dict[zone.ZoneID].keys():
+            eval_dict[zone.ZoneID][criteria.CriteriaID] = {}
         
-        if date not in inv_dict[zone.ZoneID][criteria.CriteriaID].keys():
-            inv_dict[zone.ZoneID][criteria.CriteriaID][date] = 1
+        if date not in eval_dict[zone.ZoneID][criteria.CriteriaID].keys():
+            eval_dict[zone.ZoneID][criteria.CriteriaID][date] = 1
         else:
-            inv_dict[zone.ZoneID][criteria.CriteriaID][date] += 1
+            eval_dict[zone.ZoneID][criteria.CriteriaID][date] += 1
     
-    return inv_dict
+    return eval_dict
+
+
+def getPieChartData(value):
+    value = json.loads(value)
+    eval_dict, location_filter = {}, []
+
+    date_from = dateparser.parse(value["dateFrom"]).date() if value["dateFrom"] not in (None, "") else models.Evaluation.query.first().Date
+    date_to = dateparser.parse(value["dateTo"]).date() if value["dateTo"] not in (None, "") else datetime.date.today()
+
+    # Make location id sets from arguments
+
+    if value["LocationID"] not in (None, ""):
+        location_filter = models.Location.query.filter_by(LocationID=int(value["LocationID"])).all()
+
+    elif value["LocationTypeID"] not in (None, ""):
+        location_type = models.LocationType.query.get(value["LocationTypeID"])
+        unit = models.Unit.query.get(value["UnitID"])
+        location_filter = models.Location.query.filter_by(location_type_r=location_type, unit_r=unit).all()
+
+    elif value["UnitID"] not in (None, ""):
+        unit = models.Unit.query.get(value["UnitID"])
+        location_filter = models.Location.query.filter_by(unit_r=unit).all()
+
+    elif value["ZoneID"] not in (None, ""):
+        zone = models.Zone.query.get(value["ZoneID"])
+        units = models.Unit.query.filter_by(zone_r=zone).all()
+        for unit in units:
+            location_filter += models.Location.query.filter_by(unit_r=unit).all()
+
+    elif value["SiteID"] not in (None, ""):
+        site = models.Site.query.get(value["SiteID"])
+        zones = models.Zone.query.filter_by(site_r=site).all()
+        for zone in zones:
+            for unit in models.Unit.query.filter_by(zone_r=zone).all():
+                location_filter += models.Location.query.filter_by(unit_r=unit).all()
+    
+    else:
+        location_filter = models.Location.query.all()
+
+    location_id_set = set([location.LocationID for location in location_filter if location != None and len(location_filter) > 0])
+
+    evaluations = models.Evaluation.query.filter_by(Validation=0).filter(
+        and_(
+            models.Evaluation.Date >= date_from,
+            models.Evaluation.Date <= date_to,
+            models.Evaluation.LocationID.in_(location_id_set)
+        )).all()
+
+
+    for v in evaluations:
+        category = v.category_r
+        criteria = category.criteria_r
+
+        if criteria.CriteriaID not in eval_dict.keys():
+            eval_dict[criteria.CriteriaID], eval_dict[criteria.CriteriaID]["Detail"] = {}, {}
+            eval_dict[criteria.CriteriaID]["Total"] = 1
+            eval_dict[criteria.CriteriaID]["Detail"][category.Description] = 1
+            eval_dict[criteria.CriteriaID]["Description"] = criteria.Description
+        else:
+            eval_dict[criteria.CriteriaID]["Total"] += 1
+
+            if category.Description not in eval_dict[criteria.CriteriaID]["Detail"].keys():
+                eval_dict[criteria.CriteriaID]["Detail"][category.Description] = 1
+            else:
+                eval_dict[criteria.CriteriaID]["Detail"][category.Description] += 1
+    
+    return eval_dict
    
 
 def getZoneByID(value):
