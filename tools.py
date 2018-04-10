@@ -27,7 +27,8 @@ def getLocationType(value):
 
 
 def getLocation(value):
-    locations = models.Location.query.filter_by(UnitID=value).all()
+    value = json.loads(value)
+    locations = models.Location.query.filter_by(UnitID=int(value["UnitID"]), LocationTypeID=int(value["LocationTypeID"])).all()
     return [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
 
 
