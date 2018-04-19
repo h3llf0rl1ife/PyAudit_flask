@@ -1,41 +1,54 @@
 $(function() {
     $('select').material_select();
+    $("#i-Site").on("change", function() {
+        removeOptions("Zone")
+        removeOptions("Unit")
+        removeOptions("LocationType")
+        removeOptions("Location")
+        
+        getData($(this).val(), "Zone")
+    })
+    
+    $("#i-Zone").on("change", function() {
+        removeOptions("Unit")
+        removeOptions("LocationType")
+        removeOptions("Location")
+        
+        getData($(this).val(), "Unit")
+    })
+    
+    $("#i-Unit").on("change", function() {
+        removeOptions("LocationType")
+        removeOptions("Location")
+    
+        getData($(this).val(), "LocationType")
+    })
+    
+    $("#i-LocationType").on("change", function() {
+        removeOptions("Location")
+        let value = {
+            LocationTypeID: $(this).val(),
+            UnitID: $("#i-Unit").val()
+        }
+        getData(JSON.stringify(value), "Location")
+    })
+    
+    $("#i-Criteria").on("change", function() {
+        removeOptions("Category")
+        getData($(this).val(), "Category")
+    })
+    
+    $("#Send").on("click", function() {
+        let value = {
+            LocationID: $("#i-Location").val(),
+            CategoryID: $("#i-Category").val(),
+            Validation: $("#i-Validation").val(),
+            Comment: $("#i-Comment").val()
+        }
+    })
 });
 
-$("#i-Site").on("change", function() {
-    removeOptions("Zone")
-    removeOptions("Unit")
-    removeOptions("LocationType")
-    removeOptions("Location")
-    
-    getData($(this).val(), "Zone")
-})
 
-$("#i-Zone").on("change", function() {
-    removeOptions("Unit")
-    removeOptions("LocationType")
-    removeOptions("Location")
-    
-    getData($(this).val(), "Unit")
-})
-
-$("#i-Unit").on("change", function() {
-    removeOptions("LocationType")
-    removeOptions("Location")
-
-    getData($(this).val(), "LocationType")
-})
-
-$("#i-LocationType").on("change", function() {
-    removeOptions("Location")
-
-    getData($(this).val(), "Location")
-})
-
-$("#i-Criteria").on("change", function() {
-    removeOptions("Category")
-    getData($(this).val(), "Category")
-})
 
 /*$(".btn-modifier").on("click", function() {
     $(".btn-ajouter").addClass("hide")

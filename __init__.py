@@ -9,11 +9,12 @@ import os
 app = Flask(__name__)
 
 # File upload config
-UPLOAD_FOLDER = os.path.join(app.instance_path, "uploads")
+UPLOAD_FOLDER = os.path.join(app.instance_path, "static/uploads")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # SQLAlchemy config
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:copag@localhost/audit_v4'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 

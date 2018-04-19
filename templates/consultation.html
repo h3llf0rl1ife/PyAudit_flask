@@ -2,129 +2,370 @@
 
 {% block head %}
 <link href="{{ url_for('static', filename='css/consultation.css') }}" rel="stylesheet">
+<meta name="csrf" content="{{ csrf_token() }}">
 {% endblock %}
+
+{% block header_title %}Consultation{% endblock %}
+{% block header_tagline %}Données brutes de l'Audit 5S{% endblock %}
 
 {% block body %}
 <div class="container" id="table-container">
-  <div class="card-panel">
+  <div class="card-panel mt1">
     <div class="row">
-      <div class="input-field col s1">
-        <input type="text" class="datepicker" id="dateFrom">
-        <label for="dateFrom">De</label>
+      <div class="row col s12 m12 l5 ps0">
+        <div class="row col s12 m4 l4 ps0">
+          <div class="input-field col s6">
+            <input placeholder="" type="text" class="datepicker" id="dateFrom">
+            <label for="dateFrom">Du</label>
+          </div>
+          <div class="input-field col s6">
+            <input placeholder="" type="text" class="datepicker" id="dateTo">
+            <label for="dateTo">Au</label>
+          </div>
+        </div>
+        <div class="row col s12 m8 l8 ps0">
+          <div class="input-field col s4">
+            <select id="SiteID">
+              <option value="" selected>Tous</option>
+              {% for site in contexts.sites %}
+              <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
+              {% endfor %}
+            </select>
+            <label>Site</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="ZoneID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Zone</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="UnitID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Unité</label>
+          </div>
+        </div>
       </div>
-      <div class="input-field col s1">
-        <input type="text" class="datepicker" id="dateTo">
-        <label for="dateTo">À</label>
+      <div class="row col s12 m12 l7 ps0">
+        <div class="row col s12 m4 l4 ps0">
+          <div class="input-field col s6">
+            <select id="LocationTypeID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Nature</label>
+          </div>
+          <div class="input-field col s6">
+            <select id="LocationID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Désignation</label>
+          </div>
+        </div>
+        <div class="row col s12 m8 l8 ps0">
+          <div class="input-field col s5">
+            <select id="CriteriaID">
+              <option value="" selected>Tous</option>
+              {% for criteria in contexts.criterias %}
+              <option value="{{ criteria.CriteriaID }}">{{ criteria.Description }}</option>
+              {% endfor %}
+            </select>
+            <label>Critère d'evaluation</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="CategoryID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Rubrique</label>
+          </div>
+          <div class="input-field col s3">
+            <select id="Validation">
+              <option value="" selected>Toutes</option>
+              <option value="1">Oui</option>
+              <option value="0">Non</option>
+            </select>
+            <label>Validation</label>
+          </div>
+        </div>
       </div>
-      <div class="input-field col s1">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label >Site</label>
-      </div>
-      <div class="input-field col s1">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Zone</label>
-      </div>
-      <div class="input-field col s1">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Unit</label>
-      </div>
-      <div class="input-field col s1">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Nature</label>
-      </div>
-      <div class="input-field col s2">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Critère d'evaluation</label>
-      </div>
-      <div class="input-field col s3">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Rubrique</label>
-      </div>
-      <div class="input-field col s1">
-        <select>
-          <option value="" disabled selected>Choisir</option>
-        </select>
-        <label>Validation</label>
+    </div>
+    <div class="row">
+      <button class="col s7 m9 l9 waves-effect waves-light btn blue darken-3" id="Search">Rechercher</button>
+      <button class="col s4 m2 l2 offset-s1 offset-m1 offset-l1 waves-effect waves-light btn red darken-3" id="Clear">Effacer</button>
+    </div>
+  </div>
+
+  <div class="row center">
+    <div class="col s12">
+      <ul class="pagination" id="pagination-ul">
+        <li class="disabled waves-effect" id="chevron-left"><a><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect active"><a class="page-btn" value="1">1</a></li>
+        <li class="waves-effect"><a class="page-btn" value="2">2</a></li>
+        <li class="waves-effect"><a class="page-btn" value="3">3</a></li>
+        <li class="waves-effect"><a class="page-btn" value="4">4</a></li>
+        <li class="waves-effect"><a class="page-btn" value="5">5</a></li>
+        <li class="waves-effect"><a class="page-btn" value="6">6</a></li>
+        <li class="waves-effect"><a class="page-btn" value="7">7</a></li>
+        <li class="waves-effect"><a class="page-btn" value="8">8</a></li>
+        <li class="waves-effect"><a class="page-btn" value="9">9</a></li>
+        <li class="waves-effect"><a class="page-btn" value="10">10</a></li>
+        <li class="waves-effect"><a class="page-btn" value="11">11</a></li>
+        <li class="waves-effect"><a class="page-btn" value="12">12</a></li>
+        <li class="waves-effect"><a class="page-btn" value="13">13</a></li>
+        <li class="waves-effect"><a class="page-btn" value="14">14</a></li>
+        <li class="waves-effect"><a class="page-btn" value="15">15</a></li>
+        <li class="waves-effect"><a class="page-btn" value="16">16</a></li>
+        <li class="waves-effect"><a class="page-btn" value="17">17</a></li>
+        <li class="waves-effect" id="chevron-right"><a><i class="material-icons">chevron_right</i></a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12">
+      <div class="card-panel">
+        <div class="Table-wrapper">
+          <table class="responsive-table highlight bordered" id="dataTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Auditeur</th>
+                <th>Site</th>
+                <th>Zone</th>
+                <th>Unité</th>
+                <th>Nature</th>
+                <th>Désignation</th>
+                <th>Critère d'evaluation</th>
+                <th>Rubrique</th>
+                <th>Validation</th>
+                <th>Remarque</th>
+                <th>Feedback</th>
+                <th>Pièces jointes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>3</td>
+                <td>20/03/2017</td>
+                <td>Admin</td>
+                <td>COPAG Siège</td>
+                <td>COPAG Siège Ouest</td>
+                <td>Support</td>
+                <td>Bâtiment</td>
+                <td>Bloc social</td>
+                <td>TENIR RANGER</td>
+                <td>Y a-t-il des objets inutiles ?</td>
+                <td>Non</td>
+                <td>bla bla</td>
+                <td>bla bla</td>
+                <td>
+                  <a class="modal-trigger" href="#modal-image">Voir</a>
+                </td>
+                <td>
+                  <a class="modal-trigger" href="#modal-edit">
+                    <i class="material-icons">&#xE254;</i>
+                  </a>
+                  <a class="modal-trigger" href="#modal-delete">
+                    <i class="material-icons">&#xE92B;</i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-  <div class="card-panel">
-    <table class="responsive-table highlight bordered" id="dataTable">
-      <thead class="">
-        <tr>
-          <th>Date</th>
-          <th>Site</th>
-          <th>Zone</th>
-          <th>Unité</th>
-          <th>Nature</th>
-          <th>Désignation</th>
-          <th>Critère d'evaluation</th>
-          <th>Rubrique</th>
-          <th>Validation</th>
-          <th>Remarque</th>
-          <th>Pièces jointes</th>
-          <th>Action</th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <tr>
-          <td>20/03/2018</td>
-          <td>COPAG Siège</td>
-          <td>COPAG Siège Ouest</td>
-          <td>Support</td>
-          <td>Bâtiment</td>
-          <td>Bloc social</td>
-          <td>TENIR RANGER</td>
-          <td>Y a-t-il des objets inutiles ?</td>
-          <td>Non</td>
-          <td>bla bla</td>
-          <td>image.jpg</td>
-          <td>Modifier Supprimer</td>
-        </tr>
-        <tr>
-          <td>21/03/2018</td>
-          <td>COPAG Siège</td>
-          <td>COPAG Siège Ouest</td>
-          <td>Support</td>
-          <td>Bâtiment</td>
-          <td>Bloc social</td>
-          <td>TENIR RANGER</td>
-          <td>Y a-t-il des objets inutiles ?</td>
-          <td>Non</td>
-          <td>bla bla</td>
-          <td>image.jpg</td>
-          <td>Ajouter Supprimer</td>
-        </tr>
-        <tr>
-          <td>20/03/2017</td>
-          <td>COPAG Siège</td>
-          <td>COPAG Siège Ouest</td>
-          <td>Support</td>
-          <td>Bâtiment</td>
-          <td>Bloc social</td>
-          <td>TENIR RANGER</td>
-          <td>Y a-t-il des objets inutiles ?</td>
-          <td>Non</td>
-          <td>bla bla</td>
-          <td>image.jpg</td>
-          <td>Modifier Supprimer</td>
-        </tr>
-      </tbody>
-    </table>
+  <div id="modal-image" class="modal">
+    <div class="modal-content">
+      <div id="image-attachments" class="row">
+        <img class="responsive-img materialboxed col s12" src="https://www.tazio.co.uk/img/Aptitude-Test.png">
+      </div>
+      <div class="section hide" id="other-attachments">
+        <h6>Autres pièces jointes :</h6>
+        <ul id="other-attachments-ul">
+          <li>text.csv</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action modal-close waves-effect waves-grey btn-flat">Fermer</button>
+    </div>
   </div>
+
+  <div id="modal-edit" class="modal">
+    <div class="modal-content">
+      <form action="/consultation/api" method="POST" enctype="multipart/form-data">
+        
+        <div class="card-panel">
+          <div class="row">
+            <div class="switch col s12 right-align">
+              <label>
+                <input type="checkbox" id="checkbox-location">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="valign-wrapper row section">
+            <span class="col s4 m3 l2">Site</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Site" disabled>
+              <option value="" disabled selected>Selectionner</option>
+              {% for site in contexts.sites %}
+              <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
+              {% endfor %}
+            </select>
+          </div>
+    
+          <div class="row valign-wrapper">
+            <span class="col s4 m3 l2">Zone</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Zone" disabled>
+              <option value="" disabled selected>Selectionner</option>
+            </select>
+          </div>
+    
+          <div class="row valign-wrapper section">
+            <span class="col s4 m3 l2">Unit&eacute;</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Unit" disabled>
+              <option value="" disabled selected>Selectionner</option>
+            </select>
+          </div>
+    
+          <div class="row valign-wrapper">
+            <span class="col s4 m3 l2">Nature</span>
+            <select class="col s8 m9 l10 browser-default" id="i-LocationType" disabled>
+              <option value="" disabled selected>Selectionner</option>
+            </select>
+          </div>
+    
+          <div class="row valign-wrapper section">
+            <span class="col s4 m3 l2">Désignation</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Location" name="LocationID" disabled>
+              <option value="" disabled selected>Selectionner</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="card-panel">
+          <div class="row">
+            <div class="switch col s12 right-align">
+              <label>
+                <input type="checkbox" id="checkbox-criteria">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="row valign-wrapper section">
+            <span class="col s4 m3 l2">Crit&egrave;re d'&eacute;valuation</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Criteria" disabled>
+              <option value="" disabled selected>Selectionner</option>
+              {% for criteria in contexts.criterias %}
+              <option value="{{ criteria.CriteriaID }}">{{ criteria.Description }}</option>
+              {% endfor %}
+            </select>
+          </div>
+  
+          <div class="row valign-wrapper">
+            <span class="col s4 m3 l2">Rubrique</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Category" name="CategoryID" disabled>
+              <option value="" disabled selected>Selectionner</option>
+            </select>
+          </div>
+  
+          <div class="row valign-wrapper section">
+            <span class="col s4 m3 l2">Validation</span>
+            <select class="col s8 m9 l10 browser-default" id="i-Validation" name="Validation" disabled>
+              <option value="" disabled selected>Selectionner</option>
+              <option value="1">Oui</option>
+              <option value="0">Non</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="card-panel">
+          <div class="row">
+            <div class="switch col s12 right-align">
+              <label>
+                <input type="checkbox" id="checkbox-comment">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <span class="col s4 m3 l2">Remarque</span>
+            <textarea class="col s8 m9 l10 materialize-textarea" id="i-Comment" name="Comment" disabled></textarea>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <div class="row">
+            <div class="switch col s12 right-align">
+              <label>
+                <input type="checkbox" id="checkbox-feedback">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <span class="col s4 m3 l2">Feedback</span>
+            <textarea class="col s8 m9 l10 materialize-textarea" id="i-Feedback" name="Feedback" disabled></textarea>
+          </div>
+        </div>
+        
+        <div class="card-panel">
+          <div class="row">
+            <div class="switch col s12 right-align">
+              <label>
+                <input type="checkbox" id="checkbox-attachment">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul id="attachment-ul">
+                <li>
+                  <input type="checkbox" class="filled-in" id="image.jpg" checked="checked" disabled>
+                  <label for="image.jpg">Image.jpg</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row valign-wrapper">
+            <div class="file-field input-field col s12">
+              <div class="btn waves-effect waves-light">
+                <i class="material-icons" id="attach-btn">attachment</i>
+                <input type="file" id="i-File" name="Attachment" multiple disabled>
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path" id="i-File-Path" type="text" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action modal-close waves-effect waves-green btn-flat" id="Apply">Appliquer</button>
+      <button class="modal-action modal-close waves-effect waves-red btn-flat">Annuler</button>
+    </div>
+  </div>
+
+  <div id="modal-delete" class="modal">
+    <div class="modal-content">
+      <h5>Supprimer définitivement ?</h5>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action modal-close waves-effect waves-green btn-flat" id="Delete">Supprimer</button>
+      <button class="modal-action modal-close waves-effect waves-red btn-flat">Annuler</button>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
 

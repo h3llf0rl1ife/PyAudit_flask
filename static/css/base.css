@@ -26,3 +26,32 @@ main {
     margin: 0!important;
     margin-right: 15px!important;
 }
+
+.nav-extended {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-background {
+    background-image: url('/static/images/audit_illustr.png');
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+.nav-header {
+    word-wrap: break-word;
+    clear: both;
+    padding: 40px 0;
+}
+
+.tagline {
+    display: block;
+    margin: -40px 0 40px 0;
+    color: rgba(255,255,255,0.8);
+}

@@ -2,7 +2,7 @@
 <html lang="fr"> 
   <head>
     <meta charset="UTF-8">
-    <meta name="theme-color" content="#00838f">
+    <meta name="theme-color" content="#4b5960">
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -15,64 +15,71 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{% block title %}{% endblock %}COPAG Si&egrave;ge</title>
+    <title>{% block title %}{% endblock %}COPAG - AUDIT 5S</title>
     
   </head>
 
   <body>
     <header>
+      
+      <nav class="nav-extended blue-grey darken-3">
+        <div class="nav-background"></div>
+        <div class="nav-wrapper container">
+          <a href="#" class="brand-logo">
+            <img class="responsive-img show-on-small hide-on-med-and-up" src="{{ url_for('static', filename='images/copagLogo1.png') }}">
+            <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}">
+          </a>
+          {% if current_user.is_authenticated %}
+          <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            {% if current_user.Profile == "Administrateur" %}
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/evaluation">Evaluation</a></li>
+            <li><a href="/consultation">Consultation</a></li>
+            {% endif %}
+            <li><a class="dropdown-button" href="#" data-activates="account-dropdown"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a></li>
+          </ul>
+          {% endif %}
+        </div>
+        <div class="nav-header center">
+          <h1>{% filter upper %}{% block header_title %}{% endblock %}{% endfilter %}</h1>
+          <div class="tagline">{% block header_tagline %}{% endblock %}</div>
+        </div>
+      </nav>
+
       <ul id="account-dropdown" class="dropdown-content">
         <li><a href="/logout"><i class="material-icons left">&#xE8AC;</i>Se déconnecter</a></li>
       </ul>
-      <nav class="nav-extended cyan darken-3">
-        <div class="container">
-          <div class="nav-wrapper">
-            <a href="#" class="brand-logo">
-              <img class="responsive-img show-on-small hide-on-med-and-up" src="{{ url_for('static', filename='images/copagLogo1.png') }}">
-              <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}">
-            </a>
-            {% if current_user.is_authenticated %}
-            <!-- TODO: Remove icons -->
-            <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-              {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/dashboard">Dashboard</a></li>
-              <li><a href="/evaluation">Evaluation</a></li>
-              <li><a href="/consultation">Consultation</a></li>
-              {% endif %}
-              <li><a class="dropdown-button" href="#" data-activates="account-dropdown"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a></li>
-            </ul>
-            <ul class="side-nav" id="mobile-nav">
-              <li class="no-padding">
-                <ul class="collapsible collapsible-accordion">
-                  <li>
-                    <a class="collapsible-header"><i class="material-icons left nom">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a>
-                    <div class="collapsible-body">
-                      <ul>
-                        <li><a href="/logout" class=""><i class="material-icons left nom">&#xE8AC;</i>Se déconnecter</a></li>
-                      </ul>
-                    </div>
-                  </li>
+
+      <ul class="side-nav" id="mobile-nav">
+        <li class="no-padding">
+          <ul class="collapsible collapsible-accordion">
+            <li>
+              <a class="collapsible-header"><i class="material-icons left nom">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a>
+              <div class="collapsible-body">
+                <ul>
+                  <li><a href="/logout" class=""><i class="material-icons left nom">&#xE8AC;</i>Se déconnecter</a></li>
                 </ul>
-              </li>
-              {% if current_user.Profile == "Administrateur" %}
-              <li><a href="/dashboard" class="nop"><i class="material-icons left nom">&#xE24B;</i>Dashboard</a></li>
-              <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
-              <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE880;</i>Consultation</a></li>
-              {% endif %}
-            </ul>
-            {% endif %}
-          </div>
-        </div>
-      </nav>
+              </div>
+            </li>
+          </ul>
+        </li>
+        {% if current_user.Profile == "Administrateur" %}
+        <li><a href="/dashboard" class="nop"><i class="material-icons left nom">&#xE24B;</i>Dashboard</a></li>
+        <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
+        <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE880;</i>Consultation</a></li>
+        {% endif %}
+      </ul>
+
+
     </header>
 
-    <main class="">
+    <main class="blue-grey lighten-5">
       {% block body %}{% endblock %}
     </main>
 
     <!--TODO: Add footer-->
-    <footer class="page-footer cyan darken-3">
+    <footer class="page-footer blue-grey darken-4">
       <div class="container">
         <div class="row">
           <div class="col l6 s12">

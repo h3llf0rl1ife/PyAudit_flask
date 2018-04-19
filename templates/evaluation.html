@@ -4,6 +4,9 @@
 <link href="{{ url_for('static', filename='css/evaluation.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block header_title %}Evaluation{% endblock %}
+{% block header_tagline %}Contrôle Audit 5S{% endblock %}
+
 {% block body %}
   <div class="container">
     <form action="/evaluation/api" method="POST" enctype="multipart/form-data">
@@ -108,7 +111,7 @@
       <div class="divider"></div>
       <div class="section">
         <div class="row" id="form-buttons">
-          <button class="col s10 offset-s1 truncate waves-effect waves-light btn green btn-ajouter" type="submit">Ajouter</button>
+          <button class="col s10 offset-s1 truncate waves-effect waves-light btn green" id="Send">Ajouter</button>
         </div>
       </div>
     </form>

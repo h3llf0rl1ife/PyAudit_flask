@@ -2,6 +2,45 @@
     padding-top: 0.5rem;
 }
 
+.ps0 {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+
+.chart-sizing-35 {
+    min-height: 300px;
+    max-height: 500px;
+}
+
+.chart-sizing-45 {
+    min-height: 400px;
+    max-height: 500px;
+}
+
+@media only screen and (min-width: 601px) {
+    .chart-sizing-45 {
+        min-height: 450px;
+        max-height: 550px;
+    }
+
+    .chart-sizing-35 {
+        min-height: 350px;
+        max-height: 500px;
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    .chart-sizing-45 {
+        min-height: 500px;
+        max-height: 600px;
+    }
+
+    .chart-sizing-35 {
+        min-height: 400px;
+        max-height: 550px;
+    }
+}
+
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }

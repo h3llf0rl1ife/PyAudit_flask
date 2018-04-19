@@ -132,31 +132,26 @@ def evaluation_api():
             attachments = request.files.getlist("Attachment")
             if len(attachments) > 0:
                 evaluation_directory = os.path.join('evaluations', str(evaluation_id))
-                file_directory = os.path.join(app.root_path, 'uploads', evaluation_directory)
+                file_directory = os.path.join(app.root_path, 'static/uploads', evaluation_directory)
                 
                 if not os.path.exists(file_directory):
                     os.makedirs(file_directory)
                 
                 for attachment in attachments:
                     filename = secure_filename(attachment.filename)
-                    attachment.save(os.path.join(file_directory, filename))
 
-                    # Check if mime type exists and add to table if not
+                    # Check if mime type exists and save
                     mime_type = attachment.mimetype
+                    print(mime_type)
                     attachment_type = models.AttachmentType.query.filter_by(Description=mime_type).first()
 
-                    if attachment_type == None:
-                        attachment_type = models.AttachmentType(
-                            Description=attachment.mimetype
+                    if attachment_type != None:
+                        attachment.save(os.path.join(file_directory, filename))
+                        attachment_entry = models.Attachment(
+                            Path=os.path.join(evaluation_directory, filename),
+                            attachment_type_r=attachment_type,
+                            evaluation_r=evaluation_entry
                         )
-                        db.session.add(attachment_type)
-                    
-                    attachment_entry = models.Attachment(
-                        #AttachmentID=filename,
-                        Path=os.path.join(evaluation_directory, filename),
-                        attachment_type_r=attachment_type,
-                        evaluation_r=evaluation_entry
-                    )
 
             db.session.commit()
             flash('Successful')
@@ -216,14 +211,25 @@ def dashboard_api():
 @login_required
 def consultation():
     contexts = {}
+    contexts["sites"] = models.Site.query.all()
+    contexts["criterias"] = models.Criteria.query.all()
     
     return render_template('consultation.html', contexts=contexts)
 
 
-@app.route('/consultation/api', methods=['GET', ])
+@app.route('/consultation/api', methods=['GET', 'POST'])
 @login_required
 def consultation_api():
     queries = {}
+    queries["Zone"] = tls.getZone
+    queries["Unit"] = tls.getUnit
+    queries["LocationType"] = tls.getLocationType
+    queries["Location"] = tls.getLocation
+    queries["Category"] = tls.getCategory
+    queries["TableData"] = tls.getTableData
+    queries["UpdateData"] = tls.updateData
+    queries["UpdateAttachment"] = tls.updateAttachment
+    queries["DeleteData"] = tls.deleteEvaluation
 
     if request.method == "GET":
         value = request.args.get("value")
@@ -232,5 +238,26 @@ def consultation_api():
         if None in (value, field):
             # TODO: Add error message and better protection
             return redirect("/")
+    
+    elif request.method == "POST":
+        field = request.form["field"]
+        value = ""
+
+        if field == "UpdateAttachment":
+            edit_id = request.form["edit_id"]
+            value = request.files.getlist("value")
+            deleted = request.form["deleted"]
+            
+            return jsonify(result=queries[field](value, edit_id, current_user, deleted.replace(' ', '').split(',')))
+
+        elif field == "UpdateData":
+            edit_id = request.form["edit_id"]
+            value = json.loads(request.form["value"])
+        
+            return jsonify(result=queries[field](value, edit_id, current_user))
+        
+        elif field == "DeleteData":
+            value = request.form["value"]
+            return jsonify(result=queries[field](value, current_user))
     
     return jsonify(result=queries[field](value))

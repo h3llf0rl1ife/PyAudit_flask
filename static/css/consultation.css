@@ -16,7 +16,29 @@
     width: 90%;
 }
 
-th:hover {
+/*th:hover {
     background-color:lightgrey;
     cursor: pointer
+}*/
+
+.ps0 {
+    padding-left: 0!important;
+    padding-right: 0!important;
 }
+
+.mt1 {
+    margin-top: 1.5rem;
+}
+
+.Table-wrapper {
+    overflow-x: auto;
+}
+
+#attachment-ul {
+    overflow-x: auto;
+}
+
+#attach-btn {
+    font-size: 2rem!important;
+}
+/* TODO: Fix table resonsivness */

@@ -5,19 +5,21 @@
 <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block header_title %}Tableau de bord{% endblock %}
+{% block header_tagline %}Statistiques de l'Audit 5S{% endblock %}
+
 {% block body %}
 <div class="container">
   <div id="LineCharts" class="hide-on-med-and-up show-on-small">
     {% for zone in contexts.Zones %}
-    <div class="row section">
+    <div class="row">
       <div class="col s12">
         <div class="card pt1">
-          <div class="card-image">
+          <div class="card-image chart-sizing-35">
             <canvas class="Zone{{ zone.ZoneID }}"></canvas>
           </div>
           <div class="card-content">
-            <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">more_vert</i></span>
-            <p><a href="#">This is a link</a></p>
+            <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">&#xE55E;</i></span>
           </div>
           <div class="card-reveal">
             <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
@@ -32,16 +34,19 @@
   <div class="show-on-medium-and-up hide-on-small-only">
     {% for zone in contexts.Zones %}
       {% if loop.index is not divisibleby(2) %}
-      <div class="row section">
+      <div class="row">
       {% endif %}
+        {% if loop.first and loop.last %}
+        <div class="col s12">
+        {% else %}
         <div class="col s6">
+        {% endif %}
           <div class="card pt1">
-            <div class="card-image" style="min-height:300px">
+            <div class="card-image chart-sizing-35">
               <canvas class="Zone{{ zone.ZoneID }}"></canvas>
             </div>
             <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">more_vert</i></span>
-              <p><a href="#">This is a link</a></p>
+              <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">&#xE55E;</i></span>
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
@@ -49,72 +54,82 @@
             </div>
           </div>
         </div>
-      {% if loop.index is divisibleby(2) %}
+      {% if loop.index is divisibleby(2) or loop.last %}
       </div>
       {% endif %}
     {% endfor %}
   </div>
 
-
-  <div class="card-panel">
-    <div class="row">
-      <div class="input-field col s1">
-        <input type="text" class="datepicker" id="dateFrom">
-        <label for="dateFrom">Du</label>
-      </div>
-      <div class="input-field col s1">
-        <input type="text" class="datepicker" id="dateTo">
-        <label for="dateTo">Au</label>
-      </div>
-      <div class="input-field col s2">
-        <select id="SiteID">
-          <option value="0" selected>Tous</option>
-          {% for site in contexts.sites %}
-          <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
-          {% endfor %}
-        </select>
-        <label>Site</label>
-      </div>
-      <div class="input-field col s2">
-        <select id="ZoneID">
-          <option value="0" selected>Toutes</option>
-        </select>
-        <label>Zone</label>
-      </div>
-      <div class="input-field col s2">
-        <select id="UnitID">
-          <option value="0" selected>Toutes</option>
-        </select>
-        <label>Unité</label>
-      </div>
-      <div class="input-field col s2">
-        <select id="LocationTypeID">
-          <option value="0" selected>Toutes</option>
-        </select>
-        <label>Nature</label>
-      </div>
-      <div class="input-field col s2">
-        <select id="LocationID">
-          <option value="0" selected>Toutes</option>
-        </select>
-        <label>Désignation</label>
-      </div>
-    </div>
-    <div class="row">
-      <button class="col s7 m9 l9 waves-effect waves-light btn blue" id="Search">Rechercher</button>
-      <button class="col s4 m2 l2 offset-s1 offset-m1 offset-l1 waves-effect waves-light btn red" id="Search">Effacer</button>
-    </div>
-  </div>
-
   <div class="card">
-    <div class="card-image section">
-      <canvas id="PieChart" style="min-height:500px"></canvas>
-      <canvas class="pies hide"></canvas>
+    <div class="card-content">
+      <div class="row">
+        <div class="row col s12 m2 l2 ps0">
+          <div class="input-field col s6">
+            <input placeholder="" type="text" class="datepicker" id="dateFrom">
+            <label for="dateFrom">Du</label>
+          </div>
+          <div class="input-field col s6">
+            <input placeholder="" type="text" class="datepicker" id="dateTo">
+            <label for="dateTo">Au</label>
+          </div>
+        </div>
+        <div class="row col s12 m6 l6 ps0">
+          <div class="input-field col s4">
+            <select id="SiteID">
+              <option value="" selected>Tous</option>
+              {% for site in contexts.sites %}
+              <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
+              {% endfor %}
+            </select>
+            <label>Site</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="ZoneID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Zone</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="UnitID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Unité</label>
+          </div>
+        </div>
+        <div class="row col s12 m4 l4 ps0">
+          <div class="input-field col s6">
+            <select id="LocationTypeID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Nature</label>
+          </div>
+          <div class="input-field col s6">
+            <select id="LocationID">
+              <option value="" selected>Toutes</option>
+            </select>
+            <label>Désignation</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <button class="col s7 m9 l9 waves-effect waves-light btn blue" id="Search">Rechercher</button>
+        <button class="col s4 m2 l2 offset-s1 offset-m1 offset-l1 waves-effect waves-light btn red" id="Clear">Effacer</button>
+      </div>
+      <div class="pt1"></div>
+      <div class="divider"></div>
+    </div>
+    <div class="card-image chart-sizing-45">
+      <canvas id="PieChart"></canvas>
+    </div>
+    <div class="card-image chart-sizing-45 hide">
+      <canvas id="ParetoChart"></canvas>
     </div>
     <div class="card-content">
       <div class="row">
         <div class="card-title col s10 m11 l11">Audit 5S</div>
-        <button class="col s2 m1 l1 btn hide" id="Return"><i class="material-icons md-24">&#xE8B3;</i></button>
+        <div class="col s2 m1 l1">
+          <button class="btn-floating btn-large hide" id="Return"><i class="material-icons md-24">&#xE8B3;</i></button>
+        </div>
       </div>
     </div>
   </div>

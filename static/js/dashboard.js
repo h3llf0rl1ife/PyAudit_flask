@@ -3,11 +3,11 @@ var pieChartDetail = "";
 var pieChart = "";
 var pieChartBackupData = {};
 const colors = {
-    S1: "rgba(218, 58, 47, 1)",
-    S2: "rgba(218, 207, 47, 1)",
-    S3: "rgba(81, 218, 47, 1)",
-    S4: "rgba(47, 130, 218, 1)",
-    S5: "rgba(218, 47, 210, 1)"
+    S1: "#c62828",
+    S2: "#ffd600",
+    S3: "#2e7d32",
+    S4: "#1565c0",
+    S5: "#6a1b9a"
 };
 
 $(function() {
@@ -33,9 +33,9 @@ $(function() {
     $.each($("#LineCharts canvas"), function(key, value) {
         getData($(value).attr("class").replace("Zone", ""), "ZoneChart")
     })
-    pieChart = makePieChart($("#PieChart"))
-
     getData("novalue", "LineChartData");
+    
+    pieChart = makePieChart($("#PieChart"))
 
     $('#Search').on('click', function() {
         let value = {
@@ -47,8 +47,19 @@ $(function() {
             LocationTypeID: $("#LocationTypeID").val(),
             LocationID: $("#LocationID").val()
         }
+        $('#Search').addClass('disabled')
         $('#Return').removeClass('show').addClass('hide')
         getData(JSON.stringify(value), "PieChartData");
+    })
+    $('#Clear').on('click', function() {
+        $("#dateFrom").val("")
+        $("#dateTo").val("")
+        $("#SiteID").val("")
+        removeOptions("Zone")
+        removeOptions("Unit")
+        removeOptions("LocationType")
+        removeOptions("Location")
+        $('select').material_select();
     })
     $('#Search').trigger('click')
     $('#Return').on('click', function() {
@@ -166,15 +177,16 @@ function getData(value, field) {
                 pieChart.data = {
                     labels: ["Aucune donnée"],
                     datasets: [{
-                    data: [1],
-                    backgroundColor: ["rgba(150, 150, 150, 1)"]
-                }]
+                        data: [1],
+                        backgroundColor: ["rgba(150, 150, 150, 1)"]
+                    }]
                 }
                 pieChart.options.tooltips.enabled = false
                 $('#PieChart').off('click')
             }
             pieChart.options.title.display = false
             pieChart.update()
+            $('#Search').removeClass('disabled')
         } else if (field === "LocationType") {
             removeOptions(field)
             $.each(data.result, function(key, val) {
@@ -236,7 +248,7 @@ function makeLineChart(canvas, ZoneName) {
                 },
                 elements: {
                     line: {
-                        tension: 0.1,
+                        tension: 0,
                     }
                 },
                 maintainAspectRatio: false
@@ -316,3 +328,52 @@ function removeOptions(field) {
     $('#' + field + "ID")[0].selectedIndex = 0
     $('#' + field + "ID").children("option:not(:first)").remove()
 }
+
+function makeParetoChart(canvas) {
+    var pareto_ctx = "";
+    $.each(canvas, function(key, value) {
+        pareto_ctx = value.getContext('2d')
+    })
+    let pareto_chart = new Chart(pareto_ctx, {
+        type:"bar",
+        data: {
+            labels: ["S1", "S2", "S3", "S4", "S5"], // categories
+            datasets: [
+                {
+                    label: "Bar Dataset",
+                    data: [66,50,40,24,20],
+                    borderColor: "rgb(255, 99, 132)",
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    yAxisID: 'original'
+                }, {
+                    label: "Line Dataset",
+                    data: [33,58,78,90,100],
+                    type:"line",
+                    fill: false,
+                    borderColor: "rgb(54, 162, 235)",
+                    yAxisID: 'test'
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    id: 'original',
+                    type: 'linear',
+                    ticks: {
+                        beginAtZero: true
+                    }
+                },{
+                    id: 'test',
+                    type: 'linear',
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    position: 'right'
+                }]
+            }
+        }
+    })
+}
+
+makeParetoChart($("#ParetoChart"))
