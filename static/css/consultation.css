@@ -1,16 +1,16 @@
 @media only screen and (min-width: 601px) {
-    #table-container {
+    .container {
         width: 90%;
     }
 }
 
 @media only screen and (min-width: 993px) {
-    #table-container {
+    .container {
         width: 90%;
     }
 }
 
-#table-container {
+.container {
     margin: 0 auto;
     max-width: unset!important;
     width: 90%;
@@ -28,6 +28,14 @@
 
 .mt1 {
     margin-top: 1.5rem;
+}
+
+.mb0 {
+    margin-bottom: 0;
+}
+
+.mt0 {
+    margin-top: 0;
 }
 
 .Table-wrapper {

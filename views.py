@@ -210,9 +210,14 @@ def dashboard_api():
 @app.route('/consultation/')
 @login_required
 def consultation():
+    if current_user.Profile not in ("Administrateur", "Responsable_zone"):
+        return redirect("/")
     contexts = {}
     contexts["sites"] = models.Site.query.all()
     contexts["criterias"] = models.Criteria.query.all()
+
+    if current_user.Profile == "Responsable_zone":
+        contexts["sites"] = [zone.site_r for zone in current_user.user_zone]
     
     return render_template('consultation.html', contexts=contexts)
 
@@ -220,6 +225,9 @@ def consultation():
 @app.route('/consultation/api', methods=['GET', 'POST'])
 @login_required
 def consultation_api():
+    if current_user.Profile not in ("Administrateur", "Responsable_zone"):
+        return redirect("/")
+    
     queries = {}
     queries["Zone"] = tls.getZone
     queries["Unit"] = tls.getUnit

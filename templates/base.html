@@ -4,38 +4,39 @@
     <meta charset="UTF-8">
     <meta name="theme-color" content="#4b5960">
     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/icon.css') }}" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.min.css') }}"  media="screen,projection"/>
     <!-- CSS file -->
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     {% block head %}{% endblock %}
     
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>{% block title %}{% endblock %}COPAG - AUDIT 5S</title>
+    <title>{% block title %}{% endblock %}AUDIT 5S - COPAG</title>
     
   </head>
 
   <body>
     <header>
-      
       <nav class="nav-extended blue-grey darken-3">
         <div class="nav-background"></div>
         <div class="nav-wrapper container">
-          <a href="#" class="brand-logo">
+          <a href="/" class="brand-logo">
             <img class="responsive-img show-on-small hide-on-med-and-up" src="{{ url_for('static', filename='images/copagLogo1.png') }}">
             <img class="responsive-img show-medium-and-up hide-on-small-only" src="{{ url_for('static', filename='images/copagLogo2.png') }}">
           </a>
           {% if current_user.is_authenticated %}
           <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            {% if current_user.Profile == "Administrateur" %}
+            {% if current_user.Profile in ("Administrateur", "Responsable_zone") %}
             <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/evaluation">Evaluation</a></li>
             <li><a href="/consultation">Consultation</a></li>
+            {% endif %}
+            {% if current_user.Profile == "Administrateur" %}
+            <li><a href="/evaluation">Evaluation</a></li>
             {% endif %}
             <li><a class="dropdown-button" href="#" data-activates="account-dropdown"><i class="material-icons left">account_circle</i>{{ current_user.UserID }}<i class="material-icons right">arrow_drop_down</i></a></li>
           </ul>
@@ -64,49 +65,67 @@
             </li>
           </ul>
         </li>
-        {% if current_user.Profile == "Administrateur" %}
+        {% if current_user.Profile in ("Administrateur", "Responsable_zone") %}
         <li><a href="/dashboard" class="nop"><i class="material-icons left nom">&#xE24B;</i>Dashboard</a></li>
-        <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
         <li><a href="/consultation" class="nop"><i class="material-icons left nom">&#xE880;</i>Consultation</a></li>
         {% endif %}
+        {% if current_user.Profile == "Administrateur" %}
+        <li><a href="/evaluation" class="nop"><i class="material-icons left nom">&#xE85D;</i>Evaluation</a></li>
+        {% endif %}
       </ul>
-
-
     </header>
 
     <main class="blue-grey lighten-5">
       {% block body %}{% endblock %}
     </main>
 
-    <!--TODO: Add footer-->
-    <footer class="page-footer blue-grey darken-4">
+    <noscript>
+      <style>
+        main {
+          display: none;
+        }
+      </style>
+      <h5>
+        Veuillez activer JavaScript dans votre navigateur ou contacter le <a href="https://supportinfo.copag.ma">Support</a>
+      </h5>
+    </noscript>
+
+    <footer class="page-footer blue-grey darken-3">
       <div class="container">
         <div class="row">
           <div class="col l6 s12">
             <h5 class="white-text">Audit 5S</h5>
-            <p class="grey-text text-lighten-4">Some text.</p>
+            <p class="grey-text text-lighten-4">Service Qualité, Audit et Environnement,</p>
+            <p class="grey-text text-lighten-4">Direction Générale,</p>
+            <p class="grey-text text-lighten-4">COPAG</p>
           </div>
           <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Links</h5>
+            <h5 class="white-text">Liens</h5>
             <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+              {% if current_user.Profile in ("Administrateur", "Responsable_zone") %}
+              <li><a class="grey-text text-lighten-3" href="/dashboard">Dashboard</a></li>
+              <li><a class="grey-text text-lighten-3" href="/consultation">Consultation</a></li>
+              {% endif %}
+              {% if current_user.Profile == "Administrateur" %}
+              <li><a class="grey-text text-lighten-3" href="/evaluation">Evaluation</a></li>
+              {% endif %}
+              <li><a class="grey-text text-lighten-3" href="http://dsi.copag.ma">Direction des Systèmes d'Information</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://supportinfo.copag.ma">Support</a></li>
+              <li><a class="grey-text text-lighten-3" href="http://www.copag.ma">COPAG</a></li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="footer-copyright">
+      <div class="footer-copyright blue-grey darken-4">
         <div class="container">
-        © 2018 Copyright
-        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        Tous droits réservés © 2018
+        <a class="grey-text text-lighten-4 right" href="http://dsi.copag.ma">DSI - COPAG</a>
         </div>
       </div>
     </footer>
 
     <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
     {% block javascript %}{% endblock %}

@@ -1,16 +1,13 @@
-var chartList = new Array
-var pieChartDetail = "";
-var pieChart = "";
-var pieChartBackupData = {};
-const colors = {
-    S1: "#c62828",
-    S2: "#ffd600",
-    S3: "#2e7d32",
-    S4: "#1565c0",
-    S5: "#6a1b9a"
-};
-
 $(function() {
+    window.colors = {
+        S1: "#c62828",
+        S2: "#ffd600",
+        S3: "#2e7d32",
+        S4: "#1565c0",
+        S5: "#6a1b9a"
+    };
+    window.pieChartBackupData = {};
+    window.chartList = new Array;
     $('select').material_select();
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
@@ -30,82 +27,23 @@ $(function() {
         weekdaysShort: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
         weekdaysLetter: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
     });
+
     $.each($("#LineCharts canvas"), function(key, value) {
-        getData($(value).attr("class").replace("Zone", ""), "ZoneChart")
+        getData($(value).attr("id").replace("Zone", ""), "ZoneChart")
     })
+
     getData("novalue", "LineChartData");
     
-    pieChart = makePieChart($("#PieChart"))
+    makePieChart();
 
-    $('#Search').on('click', function() {
-        let value = {
-            dateFrom: $("#dateFrom").val(),
-            dateTo: $("#dateTo").val(),
-            SiteID: $("#SiteID").val(),
-            ZoneID: $("#ZoneID").val(),
-            UnitID: $("#UnitID").val(),
-            LocationTypeID: $("#LocationTypeID").val(),
-            LocationID: $("#LocationID").val()
-        }
-        $('#Search').addClass('disabled')
-        $('#Return').removeClass('show').addClass('hide')
-        getData(JSON.stringify(value), "PieChartData");
-    })
-    $('#Clear').on('click', function() {
-        $("#dateFrom").val("")
-        $("#dateTo").val("")
-        $("#SiteID").val("")
-        removeOptions("Zone")
-        removeOptions("Unit")
-        removeOptions("LocationType")
-        removeOptions("Location")
-        $('select').material_select();
-    })
+    returnClickHandler()
+    selectChangeHandler();
+    clearClickHandler();
+    searchClickHandler();
+
+    $("#SiteID").trigger('change')
     $('#Search').trigger('click')
-    $('#Return').on('click', function() {
-        $(this).removeClass('show').addClass('hide')
-        pieChart["data"]["datasets"][0]["data"] = pieChartBackupData['data']
-        pieChart["data"]["datasets"][0]["backgroundColor"] = pieChartBackupData['backgroundColor']
-        pieChart.data.labels = pieChartBackupData['labels']
-        pieChart.options.title.display = false
-        pieChart.update()
-        disableHandler()
-        enableHandler()
-    })
-    $("#SiteID").on("change", function() {
-        removeOptions("Zone")
-        removeOptions("Unit")
-        removeOptions("LocationType")
-        removeOptions("Location")
-        
-        getData($(this).val(), "Zone")
-    })
-    
-    $("#ZoneID").on("change", function() {
-        removeOptions("Unit")
-        removeOptions("LocationType")
-        removeOptions("Location")
-        
-        getData($(this).val(), "Unit")
-    })
-    
-    $("#UnitID").on("change", function() {
-        removeOptions("LocationType")
-        removeOptions("Location")
-    
-        getData($(this).val(), "LocationType")
-    })
-    
-    $("#LocationTypeID").on("change", function() {
-        removeOptions("Location")
-        let value = {
-            LocationTypeID: $(this).val(),
-            UnitID: $("#UnitID").val()
-        }
-        getData(JSON.stringify(value), "Location")
-    })
-})
-
+});
 
 function getData(value, field) {
     $.getJSON("/dashboard/api", {
@@ -115,15 +53,15 @@ function getData(value, field) {
         console.log(data.result)
         
         if (field === "ZoneChart") {
-            var charts = makeLineChart($(".Zone" + value), data.result.ZoneName)
-            chartList.push([value, charts])
+            let charts_ = makeLineChart($("#Zone" + value), data.result.ZoneName)
+            window.chartList.push([value, charts_])
 
         } else if (field === "LineChartData") {
             $.each(data.result, function(rkey, rvalue) {
-                $.each(chartList, function(ckey, cvalue) {
+                $.each(window.chartList, function(ckey, cvalue) {
                     if (rkey === cvalue[0]) {
-                        let chart_one = cvalue[1][0]
-                        let chart_two = cvalue[1][1]
+                        let chart = cvalue[1][0]
+                        //let chart_two = cvalue[1][1]
                         $.each(rvalue, function(skey, svalue) {
                             let label = skey
                             let data = new Array
@@ -138,15 +76,15 @@ function getData(value, field) {
                                 label: label,
                                 data: data,
                                 borderWidth: 2,
-                                borderColor: colors[label],
+                                borderColor: window.colors[label],
                                 backgroundColor: 'rgba(0, 0, 0, 0)',
-                                pointBackgroundColor: colors[label]
+                                pointBackgroundColor: window.colors[label]
                             }
-                            chart_one.data.datasets.push(dataset)
-                            chart_two.data.datasets.push(dataset)
+                            chart.data.datasets.push(dataset)
+                            //chart_two.data.datasets.push(dataset)
                         })
-                        chart_one.update()
-                        chart_two.update()
+                        chart.update()
+                        //chart_two.update()
                     }
                 })
             })
@@ -158,52 +96,54 @@ function getData(value, field) {
                     backgroundColor: []
                 }]
             }
-            pieChartDetail = {}
+            window.pieChartDetail = {}
             if (!($.isEmptyObject(data.result))) {
                 $.each(data.result, function(ckey, cvalue) {
                     pie_data["labels"].push(cvalue["Description"])
                     pie_data["datasets"][0]["data"].push(cvalue["Total"])
-                    pie_data["datasets"][0]["backgroundColor"].push(colors[ckey])
+                    pie_data["datasets"][0]["backgroundColor"].push(window.colors[ckey])
                     pieChartDetail[cvalue["Description"]] = cvalue["Detail"]
                 })
-                pieChartBackupData["labels"] = pie_data["labels"].slice(0, pie_data["labels"].length)
-                pieChartBackupData["data"] = pie_data["datasets"][0]["data"].slice(0, pie_data["datasets"][0]["data"].length)
-                pieChartBackupData["backgroundColor"] = pie_data["datasets"][0]["backgroundColor"].slice(0, pie_data["datasets"][0]["backgroundColor"].length)
-                pieChart.data = pie_data
-                pieChart.options.tooltips.enabled = true
+                window.pieChartBackupData["labels"] = pie_data["labels"].slice(0, pie_data["labels"].length)
+                window.pieChartBackupData["data"] = pie_data["datasets"][0]["data"].slice(0, pie_data["datasets"][0]["data"].length)
+                window.pieChartBackupData["backgroundColor"] = pie_data["datasets"][0]["backgroundColor"].slice(0, pie_data["datasets"][0]["backgroundColor"].length)
+                window.pieChart.data = pie_data
+                window.pieChart.options.tooltips.enabled = true
                 disableHandler()
                 enableHandler()
             } else {
-                pieChart.data = {
+                window.pieChart.data = {
                     labels: ["Aucune donnée"],
                     datasets: [{
                         data: [1],
                         backgroundColor: ["rgba(150, 150, 150, 1)"]
                     }]
                 }
-                pieChart.options.tooltips.enabled = false
+                window.pieChart.options.tooltips.enabled = false
                 $('#PieChart').off('click')
             }
-            pieChart.options.title.display = false
-            pieChart.update()
+            window.pieChart.options.title.display = false
+            window.pieChart.update()
             $('#Search').removeClass('disabled')
-        } else if (field === "LocationType") {
-            removeOptions(field)
-            $.each(data.result, function(key, val) {
-                $('#' + field + 'ID').append(
-                    $("<option></option>")
-                    .attr("value", val[field + "ID"])
-                    .text(val["Description"]));
-            });
-            $('select').material_select();
         } else {
-            removeOptions(field)
-            $.each(data.result, function(key, val) {
-                $('#' + field + 'ID').append(
+            removeOptions(field);
+
+            for (let i = 0, l = data.result.length; i < l; i++) {
+                let text_f = data.result[i][field + "Name"];
+                
+                if (field === "Category" || field === "LocationType") {
+                    text_f = data.result[i]["Description"];
+                };
+
+                let inputField = $('#' + field + 'ID');
+
+                inputField.append(
                     $("<option></option>")
-                    .attr("value", val[field + "ID"])
-                    .text(val[field + "Name"]));
-            });
+                    .attr("value", data.result[i][field + "ID"])
+                    .text(text_f)
+                );
+            };
+
             $('select').material_select();
         }
     })
@@ -212,58 +152,70 @@ function getData(value, field) {
 
 function makeLineChart(canvas, ZoneName) {
     var charts = new Array;
-    $.each(canvas, function(key, value) {
-        var ctx = value.getContext('2d')
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: []
+    let ctx = canvas[0].getContext('2d')
+    let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: []
+        },
+        options: {
+            title: {
+                display: false,
+                position: 'top',
+                text: ZoneName
             },
-            options: {
-                title: {
-                    display: false,
-                    position: 'top',
-                    text: ZoneName
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 1
-                        }
-                    }],
-                    xAxes: [{
-                        type: 'time',
-                        position: 'bottom',
-                        time: {
-                            minUnit: 'day',
-                            stepSize: 1
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Nombre d\'anomalies'
+                    },
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    },
+                    drawBorder: true
+                }],
+                xAxes: [{
+                    type: 'time',
+                    position: 'bottom',
+                    time: {
+                        displayFormats: {
+                            day: 'DD/MM'
                         },
-                    }]
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                elements: {
-                    line: {
-                        tension: 0,
-                    }
-                },
-                maintainAspectRatio: false
+                        minUnit: 'day',
+                    //    stepSize: 1
+                    },
+                    ticks: {
+                        source: 'data'
+                    },
+                    distribution: 'series'
+                }],
+            },
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            elements: {
+                line: {
+                    tension: 0,
+                }
+            },
+            maintainAspectRatio: false,
+            responsiveAnimationDuration: 0,
+            hover: {
+                mode: 'nearest'
             }
-        })
-        charts.push(chart)
+        }
     })
+    charts.push(chart)
     return charts
 }
 
-function makePieChart(canvas) {
-    var pie_ctx = "";
-    $.each(canvas, function(key, value) {
-        pie_ctx = value.getContext('2d')
-    })
+function makePieChart() {
+    let pie_ctx = $("#PieChart")[0].getContext('2d');
+
     let pie_chart = new Chart(pie_ctx, {
         type: 'pie',
         data: {
@@ -287,15 +239,15 @@ function makePieChart(canvas) {
             },
             maintainAspectRatio: false
         }
-    })
-    return pie_chart
+    });
+    window.pieChart = pie_chart;
 }
 
 function PieClickHandler(e) {
-    let firstPoint = pieChart.getElementAtEvent(e)[0];
+    let firstPoint = window.pieChart.getElementAtEvent(e)[0];
 
     if (firstPoint) {
-        let label = pieChart.data.labels[firstPoint._index];
+        let label = window.pieChart.data.labels[firstPoint._index];
         let pie_labels = []
         let pie_data = []
         
@@ -304,11 +256,11 @@ function PieClickHandler(e) {
             pie_data.push(cvalue)
         })
 
-        pieChart.data.labels = pie_labels.slice(0, pie_labels.length)
-        pieChart["data"]["datasets"][0]["data"] = pie_data.slice(0, pie_data.length)
-        pieChart.options.title.display = true
-        pieChart.options.title.text = label
-        pieChart.update()
+        window.pieChart.data.labels = pie_labels.slice(0, pie_labels.length)
+        window.pieChart["data"]["datasets"][0]["data"] = pie_data.slice(0, pie_data.length)
+        window.pieChart.options.title.display = true
+        window.pieChart.options.title.text = label
+        window.pieChart.update()
         disableHandler()
         $('#Return').removeClass('hide').addClass('show')
     }
@@ -328,6 +280,89 @@ function removeOptions(field) {
     $('#' + field + "ID")[0].selectedIndex = 0
     $('#' + field + "ID").children("option:not(:first)").remove()
 }
+
+function returnClickHandler() {
+    $('#Return').on('click', function() {
+        $(this).removeClass('show').addClass('hide');
+        window.pieChart["data"]["datasets"][0]["data"] = window.pieChartBackupData['data'];
+        window.pieChart["data"]["datasets"][0]["backgroundColor"] = window.pieChartBackupData['backgroundColor'];
+        window.pieChart.data.labels = window.pieChartBackupData['labels'];
+        window.pieChart.options.title.display = false;
+        window.pieChart.update();
+        disableHandler();
+        enableHandler();
+    })
+};
+
+function searchClickHandler() {
+    $('#Search').on('click', function() {
+        let value = {
+            dateFrom: $("#dateFrom").val(),
+            dateTo: $("#dateTo").val(),
+            SiteID: $("#SiteID").val(),
+            ZoneID: $("#ZoneID").val(),
+            UnitID: $("#UnitID").val(),
+            LocationTypeID: $("#LocationTypeID").val(),
+            LocationID: $("#LocationID").val()
+        };
+        $(this).addClass('disabled');
+        window.pieDataQuery = JSON.stringify(value);
+        getData(window.pieDataQuery, "PieChartData");
+    });
+};
+
+function clearClickHandler() {
+    $('#Clear').on('click', function() {
+        let defaultInputs = [$("#dateFrom"), $("#dateTo"), $("#SiteID")];
+        let variableInputs = ["Zone", "Unit", "LocationType", "Location"];
+        $.each(defaultInputs, function(key, val) {
+            val.val("")
+        });
+        $.each(variableInputs, function(key, val) {
+            removeOptions(val)
+        });
+        $('select').material_select();
+    });
+};
+
+function selectChangeHandler() {
+    let siteInputs = ["Zone", "Unit", "LocationType", "Location"];
+    let zoneInputs = siteInputs.slice(1, siteInputs.length);
+    let unitInputs = siteInputs.slice(2, siteInputs.length);
+    let locationTypeInputs = siteInputs.slice(3, siteInputs.length);
+    let selectHandlerArgs = [
+        [$("#SiteID"), siteInputs],
+        [$("#ZoneID"), zoneInputs],
+        [$("#UnitID"), unitInputs],
+        [$("#LocationTypeID"), locationTypeInputs]
+    ];
+
+    for (let i = 0, l = selectHandlerArgs.length; i < l; i++) {
+        let selectObject = selectHandlerArgs[i][0],
+            inputs = selectHandlerArgs[i][1];
+
+        let inputArray = inputs.slice(0, inputs.length);
+        
+        selectObject.on("change", function() {
+            for (let i = 0, l = inputArray.length; i < l; i++) {
+                removeOptions(inputArray[i]);
+            };
+
+            let dataValue = $(this).val()
+            if (inputArray[0] == "Location") {
+                let unit = $("#UnitID");
+
+                let value = {
+                    LocationTypeID: $(this).val(),
+                    UnitID: unit.val()
+                };
+
+                dataValue = JSON.stringify(value);
+            }
+            getData(dataValue, inputArray[0]);
+        });
+    };
+};
 
 function makeParetoChart(canvas) {
     var pareto_ctx = "";
@@ -376,4 +411,4 @@ function makeParetoChart(canvas) {
     })
 }
 
-makeParetoChart($("#ParetoChart"))
+//makeParetoChart($("#ParetoChart"))

@@ -8,7 +8,7 @@
 {% block header_tagline %}Contrôle Audit 5S{% endblock %}
 
 {% block body %}
-  <div class="container">
+  <div class="container section">
     <form action="/evaluation/api" method="POST" enctype="multipart/form-data">
       {{ evaluation_form.csrf_token }}
       <div class="row section">
@@ -99,7 +99,7 @@
       </div>
 
       <div class="file-field input-field">
-        <div class="btn waves-effect waves-light">
+        <div class="btn waves-effect waves-light cyan darken-2">
           <i class="material-icons" id="attach-btn">attachment</i>
           <input type="file" id="i-File" name="Attachment" multiple>
         </div>
@@ -111,7 +111,7 @@
       <div class="divider"></div>
       <div class="section">
         <div class="row" id="form-buttons">
-          <button class="col s10 offset-s1 truncate waves-effect waves-light btn green" id="Send">Ajouter</button>
+          <button class="col s10 offset-s1 waves-effect waves-light btn cyan darken-2" id="Send">Ajouter</button>
         </div>
       </div>
     </form>
@@ -134,6 +134,6 @@
         }
     });
   </script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/evaluation.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/minified/evaluation.min.js') }}"></script>
   
   {% endblock %}

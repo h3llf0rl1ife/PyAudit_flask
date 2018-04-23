@@ -7,11 +7,10 @@
 {% block body %}
   <div class="container">
     <div class="row section">
-      <div class="col s1 m2 l2"></div>
-      <div class="container col s10 m8 l8">
+      <div class="col s12 m8 l8 offset-m2 offset-l2">
         <div class="card">
           <div class="card-content">
-            <span class="card-title center-align section">Authentification</span>
+            <span class="card-title center section">Authentification</span>
             <div class="divider"></div>
             <div class="section"></div>
             <form method="POST" action="/login/">
@@ -32,7 +31,7 @@
                 {% if messages %}
                   <ul class="flashes">
                   {% for message in messages %}
-                    <li><i class="material-icons left">&#xE8B2;</i>{{ message }}</li>
+                    <li><i class="material-icons left red-text">&#xE8B2;</i>{{ message }}</li>
                   {% endfor %}
                   </ul>
                 {% endif %}
@@ -49,5 +48,4 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}

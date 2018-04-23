@@ -9,54 +9,27 @@
 {% block header_tagline %}Statistiques de l'Audit 5S{% endblock %}
 
 {% block body %}
-<div class="container">
-  <div id="LineCharts" class="hide-on-med-and-up show-on-small">
+<div class="container section">
+  <div class="row" id="LineCharts">
+    {% set colsize = "l6" %}
     {% for zone in contexts.Zones %}
-    <div class="row">
-      <div class="col s12">
-        <div class="card pt1">
-          <div class="card-image chart-sizing-35">
-            <canvas class="Zone{{ zone.ZoneID }}"></canvas>
-          </div>
-          <div class="card-content">
-            <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">&#xE55E;</i></span>
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
-            <p>Here is some more information about this product that is only revealed once clicked on.</p>
-          </div>
+    {% if loop.first and loop.last %}
+      {% set colsize = "l12" %}
+    {% endif %}
+    <div class="col s12 m12 {{ colsize }}">
+      <div class="card pt1">
+        <div class="card-image chart-sizing-35">
+          <canvas id="Zone{{ zone.ZoneID }}"></canvas>
+        </div>
+        <div class="card-content">
+          <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">&#xE55E;</i></span>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
+          <p>Here is some more information about this product that is only revealed once clicked on.</p>
         </div>
       </div>
     </div>
-    {% endfor %}
-  </div>
-
-  <div class="show-on-medium-and-up hide-on-small-only">
-    {% for zone in contexts.Zones %}
-      {% if loop.index is not divisibleby(2) %}
-      <div class="row">
-      {% endif %}
-        {% if loop.first and loop.last %}
-        <div class="col s12">
-        {% else %}
-        <div class="col s6">
-        {% endif %}
-          <div class="card pt1">
-            <div class="card-image chart-sizing-35">
-              <canvas class="Zone{{ zone.ZoneID }}"></canvas>
-            </div>
-            <div class="card-content">
-              <span class="card-title activator grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">&#xE55E;</i></span>
-            </div>
-            <div class="card-reveal">
-              <span class="card-title grey-text text-darken-4">{{ zone.ZoneName }}<i class="material-icons right">close</i></span>
-              <p>Here is some more information about this product that is only revealed once clicked on.</p>
-            </div>
-          </div>
-        </div>
-      {% if loop.index is divisibleby(2) or loop.last %}
-      </div>
-      {% endif %}
     {% endfor %}
   </div>
 
@@ -76,7 +49,9 @@
         <div class="row col s12 m6 l6 ps0">
           <div class="input-field col s4">
             <select id="SiteID">
+              {% if current_user.Profile != "Responsable_zone" %}
               <option value="" selected>Tous</option>
+              {% endif %}
               {% for site in contexts.sites %}
               <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
               {% endfor %}
@@ -112,8 +87,8 @@
         </div>
       </div>
       <div class="row">
-        <button class="col s7 m9 l9 waves-effect waves-light btn blue" id="Search">Rechercher</button>
-        <button class="col s4 m2 l2 offset-s1 offset-m1 offset-l1 waves-effect waves-light btn red" id="Clear">Effacer</button>
+        <button class="col s7 m9 l9 waves-effect waves-light btn blue darken-3" id="Search">Rechercher</button>
+        <button class="col s4 m2 l2 offset-s1 offset-m1 offset-l1 waves-effect waves-light btn red darken-3" id="Clear">Effacer</button>
       </div>
       <div class="pt1"></div>
       <div class="divider"></div>
@@ -128,7 +103,7 @@
       <div class="row">
         <div class="card-title col s10 m11 l11">Audit 5S</div>
         <div class="col s2 m1 l1">
-          <button class="btn-floating btn-large hide" id="Return"><i class="material-icons md-24">&#xE8B3;</i></button>
+          <button class="btn-floating btn blue-grey hide" id="Return"><i class="material-icons md-24">&#xE86A;</i></button>
         </div>
       </div>
     </div>
@@ -141,7 +116,7 @@
   {% block javascript %}
   <script type="text/javascript" src="{{ url_for('static', filename='js/chart.bundle.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/leaflet/leaflet.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/minified/dashboard.min.js') }}"></script>
   <script>
     /*const map = L.map('map').setView([30.5090965, -8.7930388,17], 14);
     const osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

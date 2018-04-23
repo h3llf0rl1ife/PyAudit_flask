@@ -4,8 +4,10 @@ import os
 import json
 import datetime
 import dateparser
+import psycopg2
 from werkzeug.utils import secure_filename
 from sqlalchemy import and_, func
+from flask_login import current_user
 from PyAudit_flask import app, db
 from PyAudit_flask import models
 
@@ -16,31 +18,55 @@ def getLatestEvaluationID_plusOne():
 
 
 def getZone(value):
-    zones = models.Zone.query.filter_by(SiteID=value).all()
-    return [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
+    if value not in (None, ""):
+        if current_user.Profile == "Responsable_zone":
+            zones = models.Zone.query.filter_by(SiteID=value, user_r=current_user).all()
+        else:
+            zones = models.Zone.query.filter_by(SiteID=value).all()
+        result = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
+    else:
+        result = []
+    return result 
     
 
 def getUnit(value):
-    units = models.Unit.query.filter_by(ZoneID=value).all()
-    return [{"UnitID": unit.UnitID, "UnitName": unit.UnitName} for unit in units]
+    if value not in (None, ""):
+        units = models.Unit.query.filter_by(ZoneID=value).all()
+        result = [{"UnitID": unit.UnitID, "UnitName": unit.UnitName} for unit in units]
+    else:
+        result = []
+    return result
 
 
 def getLocationType(value):
-    locations = models.Location.query.filter_by(UnitID=value).all()
-    location_types = [location.location_type_r for location in locations]
-    location_types = list(set(location_types))
-    return [{"LocationTypeID": location_type.LocationTypeID, "Description": location_type.Description} for location_type in location_types]
+    if value not in (None, ""):
+        locations = models.Location.query.filter_by(UnitID=value).all()
+        location_types = [location.location_type_r for location in locations]
+        location_types = list(set(location_types))
+        result = [{"LocationTypeID": location_type.LocationTypeID, "Description": location_type.Description} for location_type in location_types]
+    else:
+        result = []
+    return result
 
 
 def getLocation(value):
     value = json.loads(value)
-    locations = models.Location.query.filter_by(UnitID=int(value["UnitID"]), LocationTypeID=int(value["LocationTypeID"])).all()
-    return [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
+    if value["UnitID"] not in (None, "") and value["LocationTypeID"] not in (None, ""):
+        locations = models.Location.query.filter_by(UnitID=int(value["UnitID"]), LocationTypeID=int(value["LocationTypeID"])).all()
+        result = [{"LocationID": location.LocationID, "LocationName": location.LocationName} for location in locations]
+    else:
+        result = []
+    return result
+    
 
 
 def getCategory(value):
-    categories = models.Category.query.filter_by(CriteriaID=value).all()
-    return [{"CategoryID": category.CategoryID, "Description": category.Description} for category in categories]
+    if value not in (None, ""):
+        categories = models.Category.query.filter_by(CriteriaID=value).all()
+        result = [{"CategoryID": category.CategoryID, "Description": category.Description} for category in categories]
+    else:
+        result = []
+    return result
 
 
 def getEvaluationID(value):
@@ -174,7 +200,10 @@ def getPieChartData(value):
 
     elif value["SiteID"] not in (None, ""):
         site = models.Site.query.get(value["SiteID"])
-        zones = models.Zone.query.filter_by(site_r=site).all()
+        if current_user.Profile == "Responsable_zone":
+            zones = models.Zone.query.filter_by(site_r=site, user_r=current_user).all()
+        else:
+            zones = models.Zone.query.filter_by(site_r=site).all()
         for zone in zones:
             for unit in models.Unit.query.filter_by(zone_r=zone).all():
                 location_filter += models.Location.query.filter_by(unit_r=unit).all()
@@ -216,7 +245,7 @@ def getTableData(value):
     value = json.loads(value)
     eval_list, location_filter, category_filter = [], [], []
 
-    date_from = dateparser.parse(value["dateFrom"]).date() if value["dateFrom"] not in (None, "") else models.Evaluation.query.first().Date
+    date_from = dateparser.parse(value["dateFrom"]).date() if value["dateFrom"] not in (None, "") else datetime.date(2010, 1, 1)
     date_to = dateparser.parse(value["dateTo"]).date() + datetime.timedelta(days=1) if value["dateTo"] not in (None, "") else datetime.date.today() + datetime.timedelta(days=1)
 
     # Make location id sets from arguments
@@ -241,7 +270,10 @@ def getTableData(value):
 
     elif value["SiteID"] not in (None, ""):
         site = models.Site.query.get(value["SiteID"])
-        zones = models.Zone.query.filter_by(site_r=site).all()
+        if current_user.Profile == "Responsable_zone":
+            zones = models.Zone.query.filter_by(site_r=site, user_r=current_user).all()
+        else:
+            zones = models.Zone.query.filter_by(site_r=site).all()
         for zone in zones:
             for unit in models.Unit.query.filter_by(zone_r=zone).all():
                 location_filter += models.Location.query.filter_by(unit_r=unit).all()
@@ -324,28 +356,38 @@ def updateData(value, edit_id, current_user):
     evaluation = models.Evaluation.query.get(edit_id)
     
     if value["LocationID"][0] == 1:
-        evaluation.LocationID = value["LocationID"][1]
+        v = value["LocationID"][1]
+        if v not in (None, ""):
+            evaluation.LocationID = v
     
     if value["CategoryID"][0] == 1:
-        evaluation.CategoryID = value["CategoryID"][1]
+        v = value["CategoryID"][1]
+        if v not in (None, ""):
+            evaluation.CategoryID = v
     
     if value["Validation"][0] == 1:
-        evaluation.Validation = value["Validation"][1]
+        v = value["Validation"][1]
+        if v not in (None, ""):
+            evaluation.Validation = v
     
     if value["Comment"][0] == 1:
-        evaluation.Comment = value["Comment"][1]
+        v = value["Comment"][1]
+        if v != None:
+            evaluation.Comment = v
     
     if value["Feedback"][0] == 1:
-        if current_user.Profile == "Responsable zone":
-            if len(evaluation.eval_feedback) > 0:
-                evaluation.eval_feedback[0].Feedback = value["Feedback"][1]
-            else:
-                feedback = models.Feedback(
-                    evaluation_r=evaluation,
-                    user_r=current_user,
-                    Feedback=value["Feedback"][1])
-        elif current_user.Profile == "Administrateur" and len(evaluation.eval_feedback) > 0:
-            evaluation.eval_feedback[0].Feedback = value["Feedback"][1]
+        v = value["Feedback"][1]
+        if v != None:
+            if current_user.Profile == "Responsable_zone":
+                if len(evaluation.eval_feedback) > 0:
+                    evaluation.eval_feedback[0].Feedback = v
+                else:
+                    feedback = models.Feedback(
+                        evaluation_r=evaluation,
+                        user_r=current_user,
+                        Feedback=v)
+            elif current_user.Profile == "Administrateur" and len(evaluation.eval_feedback) > 0:
+                evaluation.eval_feedback[0].Feedback = v
     
     evaluation_edit = models.EvaluationEdit(evaluation_r=evaluation, user_r=current_user)
 

@@ -9,8 +9,8 @@
 {% block header_tagline %}Données brutes de l'Audit 5S{% endblock %}
 
 {% block body %}
-<div class="container" id="table-container">
-  <div class="card-panel mt1">
+<div class="container section" id="table-container">
+  <div class="card-panel mb0">
     <div class="row">
       <div class="row col s12 m12 l5 ps0">
         <div class="row col s12 m4 l4 ps0">
@@ -26,7 +26,9 @@
         <div class="row col s12 m8 l8 ps0">
           <div class="input-field col s4">
             <select id="SiteID">
+              {% if current_user.Profile != "Responsable_zone" %}
               <option value="" selected>Tous</option>
+              {% endif %}
               {% for site in contexts.sites %}
               <option value="{{ site.SiteID }}">{{ site.SiteName }}</option>
               {% endfor %}
@@ -98,32 +100,16 @@
   <div class="row center">
     <div class="col s12">
       <ul class="pagination" id="pagination-ul">
-        <li class="disabled waves-effect" id="chevron-left"><a><i class="material-icons">chevron_left</i></a></li>
-        <li class="waves-effect active"><a class="page-btn" value="1">1</a></li>
-        <li class="waves-effect"><a class="page-btn" value="2">2</a></li>
-        <li class="waves-effect"><a class="page-btn" value="3">3</a></li>
-        <li class="waves-effect"><a class="page-btn" value="4">4</a></li>
-        <li class="waves-effect"><a class="page-btn" value="5">5</a></li>
-        <li class="waves-effect"><a class="page-btn" value="6">6</a></li>
-        <li class="waves-effect"><a class="page-btn" value="7">7</a></li>
-        <li class="waves-effect"><a class="page-btn" value="8">8</a></li>
-        <li class="waves-effect"><a class="page-btn" value="9">9</a></li>
-        <li class="waves-effect"><a class="page-btn" value="10">10</a></li>
-        <li class="waves-effect"><a class="page-btn" value="11">11</a></li>
-        <li class="waves-effect"><a class="page-btn" value="12">12</a></li>
-        <li class="waves-effect"><a class="page-btn" value="13">13</a></li>
-        <li class="waves-effect"><a class="page-btn" value="14">14</a></li>
-        <li class="waves-effect"><a class="page-btn" value="15">15</a></li>
-        <li class="waves-effect"><a class="page-btn" value="16">16</a></li>
-        <li class="waves-effect"><a class="page-btn" value="17">17</a></li>
-        <li class="waves-effect" id="chevron-right"><a><i class="material-icons">chevron_right</i></a></li>
+        <li class="waves-effect disabled" id="chevron-left"><a><i class="material-icons">chevron_left</i></a></li>
+        <li class="waves-effect active blue-grey darken-1"><a class="page-btn" value="1">1</a></li>
+        <li class="waves-effect disabled" id="chevron-right"><a><i class="material-icons">chevron_right</i></a></li>
       </ul>
     </div>
   </div>
   
   <div class="row">
     <div class="col s12">
-      <div class="card-panel">
+      <div class="card-panel mt0">
         <div class="Table-wrapper">
           <table class="responsive-table highlight bordered" id="dataTable">
             <thead>
@@ -148,30 +134,7 @@
 
             <tbody>
               <tr>
-                <td>3</td>
-                <td>20/03/2017</td>
-                <td>Admin</td>
-                <td>COPAG Siège</td>
-                <td>COPAG Siège Ouest</td>
-                <td>Support</td>
-                <td>Bâtiment</td>
-                <td>Bloc social</td>
-                <td>TENIR RANGER</td>
-                <td>Y a-t-il des objets inutiles ?</td>
-                <td>Non</td>
-                <td>bla bla</td>
-                <td>bla bla</td>
-                <td>
-                  <a class="modal-trigger" href="#modal-image">Voir</a>
-                </td>
-                <td>
-                  <a class="modal-trigger" href="#modal-edit">
-                    <i class="material-icons">&#xE254;</i>
-                  </a>
-                  <a class="modal-trigger" href="#modal-delete">
-                    <i class="material-icons">&#xE92B;</i>
-                  </a>
-                </td>
+                
               </tr>
             </tbody>
           </table>
@@ -200,7 +163,7 @@
   <div id="modal-edit" class="modal">
     <div class="modal-content">
       <form action="/consultation/api" method="POST" enctype="multipart/form-data">
-        
+        {% if current_user.Profile == "Administrateur" %}
         <div class="card-panel">
           <div class="row">
             <div class="switch col s12 right-align">
@@ -301,6 +264,7 @@
             <textarea class="col s8 m9 l10 materialize-textarea" id="i-Comment" name="Comment" disabled></textarea>
           </div>
         </div>
+        {% endif %}
 
         <div class="card-panel">
           <div class="row">
@@ -317,6 +281,7 @@
           </div>
         </div>
         
+        {% if current_user.Profile == "Administrateur" %}
         <div class="card-panel">
           <div class="row">
             <div class="switch col s12 right-align">
@@ -348,6 +313,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
       </form>
     </div>
     <div class="modal-footer">
@@ -358,11 +324,19 @@
 
   <div id="modal-delete" class="modal">
     <div class="modal-content">
+      {% if current_user.Profile == "Administrateur" %}
       <h5>Supprimer définitivement ?</h5>
+      {% else %}
+      <h5>Action non autorisée.</h5>
+      {% endif %}
     </div>
     <div class="modal-footer">
+      {% if current_user.Profile == "Administrateur" %}
       <button class="modal-action modal-close waves-effect waves-green btn-flat" id="Delete">Supprimer</button>
       <button class="modal-action modal-close waves-effect waves-red btn-flat">Annuler</button>
+      {% else %}
+      <button class="modal-action modal-close waves-effect waves-grey btn-flat">Fermer</button>
+      {% endif %}
     </div>
   </div>
 
@@ -370,5 +344,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/consultation.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/minified/consultation.min.js') }}"></script>
 {% endblock %}
