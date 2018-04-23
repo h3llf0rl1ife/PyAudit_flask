@@ -179,7 +179,7 @@ def dashboard():
         contexts["showAllZones"] = False
         zones = models.Zone.query.filter_by(UserID=current_user.UserID).all()
     
-    contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName} for zone in zones]
+    contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName, "Site": zone.site_r.SiteName} for zone in zones]
 
     return render_template('dashboard.html', contexts=contexts)
 
