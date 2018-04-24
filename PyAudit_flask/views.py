@@ -37,7 +37,7 @@ def login():
     if form.validate_on_submit():
         user_id = request.form["UserID"]
         password = request.form["Password"]
-        user = models.User.query.filter_by(UserID=user_id, password=password).first()
+        user = models.User.query.filter_by(UserID=user_id, Password=password).first()
         
         if user == None:
             flash("Identifiant ou mot de passe incorrect. Veuillez réessayer.", "error")

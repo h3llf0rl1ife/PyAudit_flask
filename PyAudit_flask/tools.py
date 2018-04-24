@@ -175,7 +175,7 @@ def getPieChartData(value):
     value = json.loads(value)
     eval_dict, location_filter = {}, []
 
-    date_from = dateparser.parse(value["dateFrom"]).date() if value["dateFrom"] not in (None, "") else models.Evaluation.query.first().Date
+    date_from = dateparser.parse(value["dateFrom"]).date() if value["dateFrom"] not in (None, "") else datetime.date(2010, 1, 1)
     date_to = dateparser.parse(value["dateTo"]).date() + datetime.timedelta(days=1) if value["dateTo"] not in (None, "") else datetime.date.today()
 
     # Make location id sets from arguments
