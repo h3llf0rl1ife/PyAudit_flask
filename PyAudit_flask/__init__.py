@@ -37,8 +37,8 @@ import PyAudit_flask.views
 import PyAudit_flask.models
 
 # Create tables
-db.create_all()
-db.session.commit()
+#db.create_all()
+#db.session.commit()
 
 
 if __name__ == '__main__':
