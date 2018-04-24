@@ -13,7 +13,7 @@ UPLOAD_FOLDER = os.path.join(app.instance_path, "static/uploads")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # SQLAlchemy config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:copag@localhost/audit_v4'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user1:user@@@GSTOCK/DB_AUDIT5S'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
