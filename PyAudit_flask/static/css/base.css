@@ -33,7 +33,7 @@ main {
 }
 
 .nav-background {
-    background-image: url('/static/images/audit_illustr.png');
+    background-image: url('/static/images/Auditbg-T.png');
     overflow: hidden;
     position: absolute;
     top: 0;
@@ -41,7 +41,7 @@ main {
     bottom: 0;
     left: 0;
     z-index: -1;
-    opacity: 0.1;
+    opacity: 0.2;
 }
 
 .nav-header {
