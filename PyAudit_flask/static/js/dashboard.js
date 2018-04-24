@@ -438,7 +438,7 @@ function mapOpenHandler() {
             ]
           };
       
-          let osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+          let osmUrl='http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
           let osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
           let osm = new L.TileLayer(osmUrl, {minZoom: 3, maxZoom: 18, attribution: osmAttrib});
           let copag = L.geoJSON(geojson_data, {
