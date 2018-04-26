@@ -31,16 +31,5 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "/login"
 
-
-
 import PyAudit_flask.views
 import PyAudit_flask.models
-
-# Create tables
-#db.create_all()
-#db.session.commit()
-
-
-if __name__ == '__main__':
-    app.run()
-

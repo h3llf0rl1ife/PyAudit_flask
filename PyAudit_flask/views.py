@@ -10,8 +10,6 @@ from PyAudit_flask import app, db, login_manager
 from PyAudit_flask import models, forms
 from PyAudit_flask import tools as tls
 
-#from settings import json_object
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -68,7 +66,6 @@ def evaluation():
     contexts = {}
     contexts["sites"] = models.Site.query.all()
     contexts["criterias"] = models.Criteria.query.all()
-    #contexts["evaluationID"] = tls.getLatestEvaluationID_plusOne()
 
     return render_template('evaluation.html', contexts=contexts, evaluation_form=evaluation_form)
 
@@ -88,16 +85,12 @@ def evaluation_api():
     queries["LocationType"] = tls.getLocationType
     queries["Location"] = tls.getLocation
     queries["Category"] = tls.getCategory
-    #queries["EvaluationID"] = tls.getEvaluationID
-    #queries["Evaluation"] = tls.getEvaluation
-    
 
     if request.method == "GET":
         value = request.args.get("value")
         field = request.args.get("field")
 
         if None in (value, field):
-            # TODO: Add error message and better protection
             return redirect("/")
         
         return jsonify(result=queries[field](value))
@@ -120,12 +113,8 @@ def evaluation_api():
             comment = request.form["Comment"]
 
             evaluation_entry = models.Evaluation(
-                UserID=user_id,
-                LocationID=location_id,
-                CategoryID=category_id,
-                Validation=validation,
-                Comment=comment
-            )
+                UserID=user_id, LocationID=location_id, CategoryID=category_id,
+                Validation=validation, Comment=comment)
 
             db.session.add(evaluation_entry)
 
@@ -139,8 +128,6 @@ def evaluation_api():
                 
                 for attachment in attachments:
                     filename = secure_filename(attachment.filename)
-
-                    # Check if mime type exists and save
                     mime_type = attachment.mimetype
                     print(mime_type)
                     attachment_type = models.AttachmentType.query.filter_by(Description=mime_type).first()
@@ -154,14 +141,11 @@ def evaluation_api():
                         )
 
             db.session.commit()
-            flash('Successful')
             return redirect("/evaluation")
 
         else:
-            # TODO: Return form errors
             return redirect("/evaluation")
 
-    # TODO: Return general error
     return redirect("/evaluation")
 
 
@@ -201,7 +185,6 @@ def dashboard_api():
         field = request.args.get("field")
 
         if None in (value, field):
-            # TODO: Add error message and better protection
             return redirect("/")
     
     return jsonify(result=queries[field](value))
@@ -244,7 +227,6 @@ def consultation_api():
         field = request.args.get("field")
 
         if None in (value, field):
-            # TODO: Add error message and better protection
             return redirect("/")
     
     elif request.method == "POST":
