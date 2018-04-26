@@ -14,7 +14,7 @@ from PyAudit_flask import models
 
 def getLatestEvaluationID_plusOne():
     evaluation = models.Evaluation.query.order_by(models.Evaluation.EvaluationID.desc()).first()
-    return 1 if evaluation == None else evaluation.EvaluationID + 1
+    return 1 if evaluation is None else evaluation.EvaluationID + 1
 
 
 def getZone(value):

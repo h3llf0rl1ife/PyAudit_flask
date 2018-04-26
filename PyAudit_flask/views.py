@@ -1,10 +1,8 @@
 import json
 import os.path
-import datetime
-from flask import request, render_template, jsonify, Response, redirect, flash
+from flask import request, render_template, jsonify, redirect, flash
 from flask_login import login_required, login_user, current_user, logout_user
 from werkzeug.utils import secure_filename
-from sqlalchemy.orm import load_only
 
 from PyAudit_flask import app, db, login_manager
 from PyAudit_flask import models, forms
@@ -22,8 +20,8 @@ def index():
     user_profile = current_user.Profile
     if user_profile == "Administrateur":
         return redirect("/evaluation")
-    else:
-        return redirect("/dashboard")
+
+    return redirect("/dashboard")
 
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -36,15 +34,14 @@ def login():
         user_id = request.form["UserID"]
         password = request.form["Password"]
         user = models.User.query.filter_by(UserID=user_id, Password=password).first()
-        
-        if user == None:
+
+        if user is None:
             flash("Identifiant ou mot de passe incorrect. Veuillez réessayer.", "error")
             return redirect('/login')
-        else:
-            login_user(user)
-            return redirect('/')
 
-    
+        login_user(user)
+        return redirect('/')
+
     return render_template('login.html', form=form)
 
 
@@ -60,9 +57,9 @@ def logout():
 def evaluation():
     if current_user.Profile != "Administrateur":
         return redirect("/")
-    
+
     evaluation_form = forms.EvaluationForm()
-    
+
     contexts = {}
     contexts["sites"] = models.Site.query.all()
     contexts["criterias"] = models.Criteria.query.all()
@@ -92,14 +89,14 @@ def evaluation_api():
 
         if None in (value, field):
             return redirect("/")
-        
+
         return jsonify(result=queries[field](value))
-    
+
     else:
         if evaluation_api_form.validate_on_submit():
             field = request.form["field"]
             value = int(request.form["value"])
-            
+
             queries["deleteEvaluation"] = tls.deleteEvaluation
 
             return jsonify(result=queries[field](value))
@@ -122,14 +119,13 @@ def evaluation_api():
             if len(attachments) > 0:
                 evaluation_directory = os.path.join('evaluations', str(evaluation_id))
                 file_directory = os.path.join(app.root_path, 'static/uploads', evaluation_directory)
-                
+
                 if not os.path.exists(file_directory):
                     os.makedirs(file_directory)
-                
+
                 for attachment in attachments:
                     filename = secure_filename(attachment.filename)
                     mime_type = attachment.mimetype
-                    print(mime_type)
                     attachment_type = models.AttachmentType.query.filter_by(Description=mime_type).first()
 
                     if attachment_type != None:
@@ -152,9 +148,8 @@ def evaluation_api():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
-    evaluations = tls.getEvaluations()
     zones = models.Zone.query.all()
-    
+
     contexts = {}
     contexts["showAllZones"] = True
     contexts["sites"] = models.Site.query.all()
@@ -162,7 +157,7 @@ def dashboard():
     if current_user.Profile not in ("Administrateur", "Top_managment"):
         contexts["showAllZones"] = False
         zones = models.Zone.query.filter_by(UserID=current_user.UserID).all()
-    
+
     contexts["Zones"] = [{"ZoneID": zone.ZoneID, "ZoneName": zone.ZoneName, "Site": zone.site_r.SiteName} for zone in zones]
 
     return render_template('dashboard.html', contexts=contexts)
@@ -186,7 +181,7 @@ def dashboard_api():
 
         if None in (value, field):
             return redirect("/")
-    
+
     return jsonify(result=queries[field](value))
 
 
@@ -201,7 +196,7 @@ def consultation():
 
     if current_user.Profile == "Responsable_zone":
         contexts["sites"] = [zone.site_r for zone in current_user.user_zone]
-    
+
     return render_template('consultation.html', contexts=contexts)
 
 
@@ -210,7 +205,7 @@ def consultation():
 def consultation_api():
     if current_user.Profile not in ("Administrateur", "Responsable_zone"):
         return redirect("/")
-    
+
     queries = {}
     queries["Zone"] = tls.getZone
     queries["Unit"] = tls.getUnit
@@ -228,7 +223,7 @@ def consultation_api():
 
         if None in (value, field):
             return redirect("/")
-    
+
     elif request.method == "POST":
         field = request.form["field"]
         value = ""
@@ -237,17 +232,17 @@ def consultation_api():
             edit_id = request.form["edit_id"]
             value = request.files.getlist("value")
             deleted = request.form["deleted"]
-            
+
             return jsonify(result=queries[field](value, edit_id, current_user, deleted.replace(' ', '').split(',')))
 
         elif field == "UpdateData":
             edit_id = request.form["edit_id"]
             value = json.loads(request.form["value"])
-        
+
             return jsonify(result=queries[field](value, edit_id, current_user))
-        
+
         elif field == "DeleteData":
             value = request.form["value"]
             return jsonify(result=queries[field](value, current_user))
-    
+
     return jsonify(result=queries[field](value))
